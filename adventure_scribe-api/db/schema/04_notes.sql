@@ -1,0 +1,8 @@
+DROP TABLE IF EXISTS notes CASCADE;
+CREATE TABLE notes (
+  id SERIAL PRIMARY KEY NOT NULL,
+  title VARCHAR(60) NOT NULL,
+  description LONGTEXT NOT NULL,
+  category VARCHAR(60) NOT NULL,
+  marker_id INTEGER REFERENCES markers(id) NOT NULL
+);
