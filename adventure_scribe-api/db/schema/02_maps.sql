@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS maps CASCADE;
 CREATE TABLE maps (
   id SERIAL PRIMARY KEY NOT NULL,
-  campaign_id INTEGER REFERENCES campaigns(id)
+  campaign_id INTEGER REFERENCES campaigns(id) ON DELETE CASCADE,
   map VARCHAR(200) NOT NULL
 );
