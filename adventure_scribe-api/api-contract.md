@@ -6,16 +6,16 @@ REGISTER
 
 POST /register
 req: {
-username: "users_name",
-password: "users_password",
-email: "users_email"
+  username: "users_name",
+  password: "users_password",
+  email: "users_email"
 }
 
 
 POST /login
-  req: {
-password: "users_password",
-email: "users_email"
+req: {
+  password: "users_password",
+  email: "users_email"
 }
 
 
@@ -23,12 +23,12 @@ email: "users_email"
 
 
 GET /me
-  res: {
-    id: "user_id",
-    name: "user_name",
-    email: "user_email",
-    dm: "true/false"
-  }
+res: {
+  id: "user_id",
+  name: "user_name",
+  email: "user_email",
+  dm: "true/false"
+}
 
 
 // Landing Page
@@ -39,30 +39,30 @@ returns an array of campaigns
 
 
 resp: {
-campaigns: [
-  {
-    id: "id" //unique value
-    title: "campaign_name"
-    },
-  {
-    id: "id" //unique value
-    title: "campaign_name"
-    },
-    ...
-  ]
+  campaigns: [
+      {
+        id: "id" //unique value
+        name: "campaign_name"
+      },
+      {
+        id: "id" //unique value
+        name: "campaign_name"
+      },
+      ...
+    ]
 }
 
 
 POST /campaigns
 campaign id (for create new)
 
-
 req: {
   campaign: {
-    id: "campaign_id"
-    campaignTitle: "title",
-    map: "map_link",
-    mapTitle: "map_title",
+    name: "campaign_name"
+    map: {
+       name: "mapname",
+       link: "maplink"
+    }
   }
 }
 
@@ -75,16 +75,13 @@ GET /campaign/:id
 res: {
   map: {
     image: "map_image",
-    title: "map_title"
+    name: "map_title"
   },
   markers: [
     {
-      title: "marker_title",
+      name: "marker_title",
       //leaflet will likely dictate how the database will be structured on marker coordinates
-      location {
-        x: "NUMBER",
-        y: "NUMBER"
-      }
+      location: ""
     }
   ]
 }
@@ -92,12 +89,8 @@ res: {
 
 POST /campaign/:campaign_id/markers
 req: {
-  id: "marker_id",
-  title: "marker_title",
-  location {
-    x: "NUMBER",
-    y: "NUMBER"
-  }
+  name: "marker_title",
+  location: ""
 }
 
 // Campaign Page 2
@@ -113,11 +106,12 @@ res: {
   ],
 } 
 
-POST /campaign/:campaign_id/markers/:marker_id
+POST /campaign/:campaign_id/markers/:marker_id/notes
 req: {
   id: "note_id",
   title: "note_title",
-  description: "note_description"
+  description: "note_description",
+  category: "category_type"
 }
 
 //Invite people to a campaign

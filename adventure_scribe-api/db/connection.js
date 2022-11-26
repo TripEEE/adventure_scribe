@@ -1,6 +1,5 @@
 // PG database client/connection setup
 const { Pool } = require('pg')
-const { generateQuery } = require('./utils/generate_insert_query');
 
 const dbParams = {
   host: process.env.DB_HOST,
@@ -35,17 +34,5 @@ db.connect();
 //     })
 // }
 
-const scribeDb = {
-  createCampaign: async (campaign) => {
-    const { query, values } = generateQuery('campaigns', campaign)
-    try {
-      const newCampaign = await db.query(query, values)
-      return newCampaign
-    }
-    catch (err) {
-      throw err
-    }
-  },
-}
-
 module.exports = db;
+
