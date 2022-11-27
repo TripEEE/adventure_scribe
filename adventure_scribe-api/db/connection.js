@@ -13,26 +13,5 @@ const db = new Pool(dbParams);
 
 db.connect();
 
-//create a new campaign
-//add a new user to a campaign
-//create a new marker
-//create a new note
-//delete all of the above
-//create new user to app (register)
-// create a new map
-
-// const addProperty = (property) => {
-//   const { query, values } = generateQuery('properties', property)
-//   return pool.query(query, values)
-//     .then((result) => {
-//       console.log(result.rows[0]);
-//       return result.rows[0]
-//     })
-//     .catch((err) => {
-//       console.log(err.message)
-//       return null
-//     })
-// }
-
 module.exports = db;
 
