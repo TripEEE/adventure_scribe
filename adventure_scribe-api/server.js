@@ -5,11 +5,22 @@ require('dotenv').config();
 const sassMiddleware = require('./lib/sass-middleware');
 const express = require('express');
 const morgan = require('morgan');
+const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
+
+
+
+const campaignRoutes = require('./routes/campaigns')
+const userRoutes = require('./routes/login_register')
 
 const PORT = process.env.PORT || 3002;
 const app = express();
 
 app.set('view engine', 'ejs');
+
+
+app.use(bodyParser.json());
+app.use(cookieParser());
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -26,18 +37,14 @@ app.use(
 );
 app.use(express.static('public'));
 
-// Separated Routes for each Resource
-// Note: Feel free to replace the example routes below with your own
-const userApiRoutes = require('./routes/users-api');
-const widgetApiRoutes = require('./routes/widgets-api');
-const usersRoutes = require('./routes/users');
-
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
-app.use('/api/users', userApiRoutes);
-app.use('/api/widgets', widgetApiRoutes);
-app.use('/users', usersRoutes);
+app.use('/api/campaigns', campaignRoutes);
+app.use(userRoutes)
+
+
+
 // Note: mount other resources here, using the same pattern above
 
 // Home page
