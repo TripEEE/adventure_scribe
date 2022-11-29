@@ -1,12 +1,14 @@
 import './Mapview.scss';
-import { MapContainer, ImageOverlay, Marker, Popup, useMapEvent, useMapEvents } from 'react-leaflet';
+import { MapContainer, ImageOverlay, Marker, Popup, useMapEvents } from 'react-leaflet';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 function LocationMarker() {
   const [position, setPosition] = useState([])
+  let [isButtonClicked, setisButtonClicked] = useState(false);
+
   const markerIconConst = L.icon({
     iconUrl: markerIcon,
     iconRetinaUrl: markerIcon,
@@ -16,24 +18,34 @@ function LocationMarker() {
 
   const map = useMapEvents({
     click(e) {
-      console.log(e);
-      let markerClick = [e.latlng.lat, e.latlng.lng];
-      setPosition(prev => [...prev, markerClick]);
+      if (!isButtonClicked) {
+        console.log(e);
+        let markerClick = [e.latlng.lat, e.latlng.lng];
+        setPosition(prev => [...prev, markerClick]);
+      }
+    },
+    popupopen() {
+      setisButtonClicked(true);
+      console.log(isButtonClicked);
+    },
+    popupclose() {
+      setisButtonClicked(false);
+      console.log(isButtonClicked);
     }
   })
 
   const removeMarker = (pos) => {
-    console.log(pos, position);
-    setPosition(current => current.filter(P => { return P !== pos}))
+    console.log(pos, position, isButtonClicked);
+    setPosition(current => current.filter(P => { return P !== pos }));
   }
 
-  return position.map ((marker) => {
+  return position.map((marker) => {
     return (
-    <Marker icon={markerIconConst} position={marker}>
-      <Popup>
-        <button onClick={() => removeMarker(marker)}>Delete Marker</button>
-      </Popup>
-    </Marker>
+      <Marker icon={markerIconConst} position={marker}>
+        <Popup>
+          <button onClick={() => removeMarker(marker)}>Remove marker</button>
+        </Popup>
+      </Marker>
     )
   })
 }
@@ -64,9 +76,4 @@ function Mapview() {
   );
 };
 
-// <Marker icon={markerIconConst} position={[500, 750]}>
-//   <Popup>
-//     Test popup.
-//   </Popup>
-// </Marker>
 export default Mapview;
