@@ -116,9 +116,8 @@ req: {
 
 //Invite people to a campaign
 
-POST /invite
+POST /campaign/:campaign_id/invite
   req: {
-    id: campaign_id,
     emails: [
       email1,
       email2,
