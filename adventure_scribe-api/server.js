@@ -8,8 +8,6 @@ const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 
-
-
 const campaignRoutes = require('./routes/campaigns')
 const userRoutes = require('./routes/login_register')
 
