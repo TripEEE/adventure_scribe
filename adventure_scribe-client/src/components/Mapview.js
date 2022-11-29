@@ -22,10 +22,17 @@ function LocationMarker() {
     }
   })
 
+  const removeMarker = (pos) => {
+    console.log(pos, position);
+    setPosition(current => current.filter(P => { return P !== pos}))
+  }
+
   return position.map ((marker) => {
     return (
     <Marker icon={markerIconConst} position={marker}>
-      <Popup>You are here</Popup>
+      <Popup>
+        <button onClick={() => removeMarker(marker)}>Delete Marker</button>
+      </Popup>
     </Marker>
     )
   })
