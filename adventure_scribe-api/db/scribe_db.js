@@ -6,10 +6,8 @@ const scribeDb = {
   campaigns: {
     create: async (campaign) => {
       const { query, values } = generateInsertQuery('campaigns', campaign)
-      console.log(query)
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -17,13 +15,18 @@ const scribeDb = {
       }
     },
 
-    getByUserId: async (campaignId) => {
-      const { query, values } = generateSelectQuery("campaigns", {
-      })
+    getByUserId: async (userId) => {
+      const query = `
+        SELECT
+          *
+        FROM
+          campaigns
+        INNER JOIN campaigns_users ON campaigns.id = campaigns_users.campaign_id
+        WHERE campaigns_users.user_id = $1
+      `
 
       try {
-        const result = await db.query(query, values)
-        console.log(result.rows[0])
+        const result = await db.query(query, [userId])
         return result.rows
       }
       catch (err) {
@@ -39,7 +42,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -63,10 +65,9 @@ const scribeDb = {
   maps: {
     create: async (map = {}) => {
       const { query, values } = generateInsertQuery('maps', map)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -82,7 +83,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -94,10 +94,10 @@ const scribeDb = {
   markers: {
     create: async (marker = {}) => {
       const { query, values } = generateInsertQuery('markers', marker)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
+
         return result.rows[0]
       }
       catch (err) {
@@ -114,7 +114,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -142,10 +141,9 @@ const scribeDb = {
   notes: {
     create: async (note = {}) => {
       const { query, values } = generateInsertQuery('notes', note)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -172,10 +170,9 @@ const scribeDb = {
   users: {
     create: async (user) => {
       const { query, values } = generateInsertQuery('users', user)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -192,7 +189,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -206,10 +202,9 @@ const scribeDb = {
         user_id: userId,
         is_DM: isDM,
       })
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -226,8 +221,25 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    getIsInCampaign: async (userId, campaignId) => {
+      const { query, values } = generateSelectQuery("campaigns_users", {
+        where: {
+          user_id: userId,
+          campaign_id: campaignId,
+        }
+      })
+
+      try {
+        const result = await db.query(query, values)
+
+        return !!result.rows.length
       }
       catch (err) {
         throw err

@@ -2,8 +2,33 @@ const express = require('express');
 const router = express.Router();
 const scribeDb = require('../db/scribe_db')
 
-// GET to api/campaigns/:id
 
+// Authorization middleware for campaigns
+router.use('/:id', async (req, res, next) => {
+  if (!req.params.id) {
+    res.status(400).send("missing campaign id")
+    return
+  }
+
+  try {
+    const isUserInCampaign = await scribeDb.users.getIsInCampaign(
+      req.requestUserId,
+      req.params.id
+    )
+
+    if (!isUserInCampaign) {
+      res.status(403).send("you do not have permission to access this resource")
+      return
+    }
+  }
+  catch (err) {
+    res.status(500).send(err)
+  }
+
+  next()
+})
+
+// GET to api/campaigns/:id
 router.get('/:id', async (req, res) => {
 
   if (!req.params.id) {
@@ -22,11 +47,51 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// POST to api/campaigns/:id/invite
+router.post('/:id/invite', async (req, res) => {
+
+  if (!req.params.id) {
+    res.status(400).send("missing campaign id")
+    return
+  }
+
+  const { emails = [] } = req.body;
+
+  try {
+    let newUsers = [];
+
+    for (const email of emails) {
+      let user = await scribeDb.users.getByEmail(email)
+      if (!user) {
+        user = await scribeDb.users.create(
+          {
+            name: "<system generated>",
+            password: "<system generated>",
+            email: email,
+          }
+        )
+        newUsers.push(user)
+      }
+
+      const isUserInCampaign = await scribeDb.users.getIsInCampaign(user.id, req.params.id)
+      if (isUserInCampaign) {
+        continue
+      }
+
+      await scribeDb.users.addUserToCampaign(user.id, req.params.id, false)
+    }
+
+    // generate some links
+  } catch (err) {
+    res.status(500).send(err)
+  }
+
+  res.status(200).send("OK")
+})
+
 // POST to api/campaigns
 
 router.post('/', async (req, res) => {
-  console.log("api/campaigns")
-
 
   const { campaign = {} } = req.body;
   const { map = {} } = campaign
@@ -49,6 +114,8 @@ router.post('/', async (req, res) => {
       campaign_id: newCampaign.id,
     }
     const newMap = await scribeDb.maps.create(newMapReq)
+    // the creator of the campaign is added to the campaign as a DM
+    await scribeDb.users.addUserToCampaign(req.requestUserId, newCampaign.id, true)
 
     res.json({ id: newCampaign.id, title: newCampaign.name, map: newMap })
   }
@@ -151,7 +218,7 @@ router.post('/:campaign_id/markers/:marker_id/notes', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const campaigns = await scribeDb.campaigns.getByUserId(
-      // todo: pass user_id
+      req.requestUserId
     )
     res.json(campaigns)
   } catch (err) {
