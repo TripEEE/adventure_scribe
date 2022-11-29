@@ -3,6 +3,7 @@ const { generateInsertQuery, generateSelectQuery } = require('./utils/query_gene
 
 const scribeDb = {
 
+  //create a new campaign
   campaigns: {
     create: async (campaign) => {
       const { query, values } = generateInsertQuery('campaigns', campaign)
@@ -15,6 +16,7 @@ const scribeDb = {
       }
     },
 
+    //get all campaigns a user is participating in
     getByUserId: async (userId) => {
       const query = `
         SELECT
@@ -33,6 +35,8 @@ const scribeDb = {
         throw err
       }
     },
+
+    //get a single campaign
     getById: async (campaignId) => {
       const { query, values } = generateSelectQuery("campaigns", {
         where: {
@@ -49,6 +53,7 @@ const scribeDb = {
       }
     },
 
+    //get all campaigns a user is participating in -- NOT WORKING PROPERLY!! -> see getByUserId
     getByUser: async () => {
       const { query } = generateSelectQuery("campaigns")
 
@@ -62,6 +67,7 @@ const scribeDb = {
     },
   },
 
+  //create a single map
   maps: {
     create: async (map = {}) => {
       const { query, values } = generateInsertQuery('maps', map)
@@ -74,6 +80,8 @@ const scribeDb = {
         throw err
       }
     },
+
+    //get a single campaign
     getByCampaignId: async (campaignId) => {
       const { query, values } = generateSelectQuery("maps", {
         where: {
@@ -91,6 +99,7 @@ const scribeDb = {
     },
   },
 
+  //get a single marker
   markers: {
     create: async (marker = {}) => {
       const { query, values } = generateInsertQuery('markers', marker)
@@ -104,6 +113,8 @@ const scribeDb = {
         throw err
       }
     },
+
+    //get a single marker on a map
     getMarkerByMapIdAndId: async (mapId, markerId) => {
       const { query, values } = generateSelectQuery("markers", {
         where: {
@@ -120,6 +131,8 @@ const scribeDb = {
         throw err
       }
     },
+
+    //get all markers on a map
     getMarkersByMapId: async (mapId) => {
       const { query, values } = generateSelectQuery("markers", {
         where: {
@@ -138,6 +151,7 @@ const scribeDb = {
 
   },
 
+  //create a new note in a marker
   notes: {
     create: async (note = {}) => {
       const { query, values } = generateInsertQuery('notes', note)
@@ -150,6 +164,8 @@ const scribeDb = {
         throw err
       }
     },
+
+    //get all notes in a marker
     getByMarkerId: async (markerId) => {
       const { query, values } = generateSelectQuery("notes", {
         where: {
@@ -167,6 +183,7 @@ const scribeDb = {
     },
   },
 
+  //create a new user
   users: {
     create: async (user) => {
       const { query, values } = generateInsertQuery('users', user)
@@ -180,6 +197,7 @@ const scribeDb = {
       }
     },
 
+    //get a single user
     getById: async (id) => {
       const { query, values } = generateSelectQuery("users", {
         where: {
@@ -196,6 +214,7 @@ const scribeDb = {
       }
     },
 
+    //user creating a campaign is added to the campaign as a user, default DM=true
     addUserToCampaign: async (userId, campaignId, isDM) => {
       const { query, values } = generateInsertQuery('campaigns_users', {
         campaign_id: campaignId,
@@ -212,6 +231,7 @@ const scribeDb = {
       }
     },
 
+    //get a user by email
     getByEmail: async (email) => {
       const { query, values } = generateSelectQuery("users", {
         where: {
@@ -228,6 +248,7 @@ const scribeDb = {
       }
     },
 
+    //get all users in a campaign
     getIsInCampaign: async (userId, campaignId) => {
       const { query, values } = generateSelectQuery("campaigns_users", {
         where: {

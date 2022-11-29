@@ -4,7 +4,7 @@ const scribeDb = require('../db/scribe_db')
 const jwt = require('jsonwebtoken');
 
 
-const JWT_SIGNING_KEY = "sdkfljsldkfjsdlkfj0i234slfj234"
+const JWT_SIGNING_KEY = "keepitsecretkeepitsafe"
 
 const jwtMiddleware = (req, res, next) => {
   const authHeader = req.header("Authorization");
