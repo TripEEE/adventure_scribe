@@ -3,5 +3,6 @@ CREATE TABLE markers (
   id SERIAL PRIMARY KEY NOT NULL,
   name VARCHAR(60) NOT NULL,
   location VARCHAR(100) NOT NULL, -- position
+  category VARCHAR(200),
   map_id INTEGER REFERENCES maps(id) ON DELETE CASCADE
 );

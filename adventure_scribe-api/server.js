@@ -9,7 +9,8 @@ const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 
 const campaignRoutes = require('./routes/campaigns')
-const { userRoutes, jwtMiddleware } = require('./routes/login_register')
+const { userRoutes } = require('./routes/login_register')
+const { jwtMiddleware } = require("./middleware/middleware")
 
 const PORT = process.env.PORT || 3002;
 const app = express();
