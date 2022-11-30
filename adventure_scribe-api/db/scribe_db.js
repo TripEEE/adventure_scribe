@@ -1,5 +1,5 @@
 const db = require('./connection')
-const { generateInsertQuery, generateSelectQuery } = require('./utils/query_generators');
+const { generateInsertQuery, generateSelectQuery, generateUpdateQuery } = require('./utils/query_generators');
 
 const scribeDb = {
 
@@ -165,6 +165,19 @@ const scribeDb = {
       }
     },
 
+    //update an existing note
+    updateNote: async (note = {}) => {
+      const { query, values } = generateUpdateQuery('notes', note, { where: { id: note.id } })
+
+      try {
+        const result = await db.query(query, values)
+        return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
     //get all notes in a marker
     getByMarkerId: async (markerId) => {
       const { query, values } = generateSelectQuery("notes", {
@@ -176,6 +189,23 @@ const scribeDb = {
       try {
         const result = await db.query(query, values)
         return result.rows
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    //get single note by id
+    getNoteById: async (noteId) => {
+      const { query, values } = generateSelectQuery("notes", {
+        where: {
+          id: noteId
+        }
+      })
+
+      try {
+        const result = await db.query(query, values)
+        return result.rows[0]
       }
       catch (err) {
         throw err
