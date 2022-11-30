@@ -2,10 +2,9 @@ import './Application.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Landing from './Landing'
 import Navbar from './Navbar';
-import Mapview from './Mapview';
 import Login from './Login'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import NotesList from './NotesList';
+import MainContainer from './Map/MainContainer';
 
 function Application() {
   return (
@@ -13,13 +12,13 @@ function Application() {
       <nav>
         <Navbar />
       </nav>
-      <div class="">
-      <NotesList />
-      <Mapview />
-      </div>
+
       <Router>
         <Routes>
           <Route path="/landing" element={<Landing />} />
+        </Routes>
+        <Routes>
+          <Route path="/map" element={<MainContainer />} />
         </Routes>
         <Routes>
           <Route path="/login" element={<Login />} />

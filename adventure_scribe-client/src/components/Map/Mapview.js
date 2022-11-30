@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 function LocationMarker() {
   const [position, setPosition] = useState([])
-  let [isButtonClicked, setisButtonClicked] = useState(false);
+  const [isButtonClicked, setisButtonClicked] = useState(false);
 
   const markerIconConst = L.icon({
     iconUrl: markerIcon,
@@ -15,6 +15,8 @@ function LocationMarker() {
     iconAnchor: [12, 42],
     popupAnchor: [0, -40],
   })
+
+
 
   const map = useMapEvents({
     click(e) {
