@@ -18,7 +18,7 @@ function Application() {
           <Route path="/landing" element={<Landing />} />
         </Routes>
         <Routes>
-          <Route path="/map" element={<MainContainer />} />
+          <Route path="/campaign" element={<MainContainer />} />
         </Routes>
         <Routes>
           <Route path="/login" element={<Login />} />

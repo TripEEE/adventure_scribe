@@ -18,6 +18,7 @@ function MainContainer(props) {
     }
   ]
   );
+  const [selectNote, setSelectNote] = useState()
 
   const displayNotes = notes.map((note) => {
     return (
