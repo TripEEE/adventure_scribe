@@ -12,6 +12,7 @@ function Application() {
       <Router>
         <nav>
       <Navbar />
+      <Mapview />
       </nav>
           <Routes>
             <Route path="/landing" element={<Landing/>}/>
