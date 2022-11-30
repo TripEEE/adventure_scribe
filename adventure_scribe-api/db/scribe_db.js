@@ -1,15 +1,14 @@
 const db = require('./connection')
-const { generateInsertQuery, generateSelectQuery } = require('./utils/query_generators');
+const { generateInsertQuery, generateSelectQuery, generateUpdateQuery } = require('./utils/query_generators');
 
 const scribeDb = {
 
+  //create a new campaign
   campaigns: {
     create: async (campaign) => {
       const { query, values } = generateInsertQuery('campaigns', campaign)
-      console.log(query)
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -17,19 +16,27 @@ const scribeDb = {
       }
     },
 
-    getByUserId: async (campaignId) => {
-      const { query, values } = generateSelectQuery("campaigns", {
-      })
+    //get all campaigns a user is participating in
+    getByUserId: async (userId) => {
+      const query = `
+        SELECT
+          *
+        FROM
+          campaigns
+        INNER JOIN campaigns_users ON campaigns.id = campaigns_users.campaign_id
+        WHERE campaigns_users.user_id = $1
+      `
 
       try {
-        const result = await db.query(query, values)
-        console.log(result.rows[0])
+        const result = await db.query(query, [userId])
         return result.rows
       }
       catch (err) {
         throw err
       }
     },
+
+    //get a single campaign
     getById: async (campaignId) => {
       const { query, values } = generateSelectQuery("campaigns", {
         where: {
@@ -39,7 +46,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -47,6 +53,7 @@ const scribeDb = {
       }
     },
 
+    //get all campaigns a user is participating in -- NOT WORKING PROPERLY!! -> see getByUserId
     getByUser: async () => {
       const { query } = generateSelectQuery("campaigns")
 
@@ -60,19 +67,21 @@ const scribeDb = {
     },
   },
 
+  //create a single map
   maps: {
     create: async (map = {}) => {
       const { query, values } = generateInsertQuery('maps', map)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
         throw err
       }
     },
+
+    //get a single campaign
     getByCampaignId: async (campaignId) => {
       const { query, values } = generateSelectQuery("maps", {
         where: {
@@ -82,7 +91,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -91,19 +99,22 @@ const scribeDb = {
     },
   },
 
+  //get a single marker
   markers: {
     create: async (marker = {}) => {
       const { query, values } = generateInsertQuery('markers', marker)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
+
         return result.rows[0]
       }
       catch (err) {
         throw err
       }
     },
+
+    //get a single marker on a map
     getMarkerByMapIdAndId: async (mapId, markerId) => {
       const { query, values } = generateSelectQuery("markers", {
         where: {
@@ -114,13 +125,14 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
         throw err
       }
     },
+
+    //get all markers on a map
     getMarkersByMapId: async (mapId) => {
       const { query, values } = generateSelectQuery("markers", {
         where: {
@@ -139,19 +151,34 @@ const scribeDb = {
 
   },
 
+  //create a new note in a marker
   notes: {
     create: async (note = {}) => {
       const { query, values } = generateInsertQuery('notes', note)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
         throw err
       }
     },
+
+    //update an existing note
+    updateNote: async (note = {}) => {
+      const { query, values } = generateUpdateQuery('notes', note, { where: { id: note.id } })
+
+      try {
+        const result = await db.query(query, values)
+        return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    //get all notes in a marker
     getByMarkerId: async (markerId) => {
       const { query, values } = generateSelectQuery("notes", {
         where: {
@@ -167,15 +194,32 @@ const scribeDb = {
         throw err
       }
     },
+
+    //get single note by id
+    getNoteById: async (noteId) => {
+      const { query, values } = generateSelectQuery("notes", {
+        where: {
+          id: noteId
+        }
+      })
+
+      try {
+        const result = await db.query(query, values)
+        return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
   },
 
+  //create a new user
   users: {
     create: async (user) => {
       const { query, values } = generateInsertQuery('users', user)
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -183,6 +227,7 @@ const scribeDb = {
       }
     },
 
+    //get a single user
     getById: async (id) => {
       const { query, values } = generateSelectQuery("users", {
         where: {
@@ -192,7 +237,6 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -200,16 +244,16 @@ const scribeDb = {
       }
     },
 
+    //user creating a campaign is added to the campaign as a user, default DM=true
     addUserToCampaign: async (userId, campaignId, isDM) => {
       const { query, values } = generateInsertQuery('campaigns_users', {
         campaign_id: campaignId,
         user_id: userId,
         is_DM: isDM,
       })
-      console.log(query)
+
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
       }
       catch (err) {
@@ -217,6 +261,7 @@ const scribeDb = {
       }
     },
 
+    //get a user by email
     getByEmail: async (email) => {
       const { query, values } = generateSelectQuery("users", {
         where: {
@@ -226,8 +271,26 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        console.log(result.rows[0])
         return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    //get all users in a campaign
+    getIsInCampaign: async (userId, campaignId) => {
+      const { query, values } = generateSelectQuery("campaigns_users", {
+        where: {
+          user_id: userId,
+          campaign_id: campaignId,
+        }
+      })
+
+      try {
+        const result = await db.query(query, values)
+
+        return !!result.rows.length
       }
       catch (err) {
         throw err

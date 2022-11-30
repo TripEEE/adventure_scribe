@@ -29,5 +29,23 @@ const generateSelectQuery = (tableName, queryObj = {}) => {
   }
 }
 
+const generateUpdateQuery = (tableName, updatedObj = {}, queryObj = {}) => {
+
+  const objectEntries = Object.entries(updatedObj)
+  const updateValues = objectEntries.map(entry => entry[1])
+  const updateExpression = objectEntries.map((entry, idx) => `${entry[0]} = $${idx + 1}`)
+
+  const whereEntries = Object.entries(queryObj.where) // [["id",2]]
+  const whereClauses = whereEntries.map((entry, idx) => `${entry[0]} = $${idx + objectEntries.length + 1}`).join(" AND ")
+  const whereValues = whereEntries.map(entry => entry[1])
+
+  const query = `UPDATE ${tableName}
+    SET ${updateExpression}
+    WHERE ${whereClauses}
+    RETURNING *`
+
+  return { query, values: [...updateValues, ...whereValues] }
+}
 exports.generateInsertQuery = generateInsertQuery
 exports.generateSelectQuery = generateSelectQuery
+exports.generateUpdateQuery = generateUpdateQuery

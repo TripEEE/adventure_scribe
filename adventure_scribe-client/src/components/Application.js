@@ -2,6 +2,7 @@ import './Application.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Landing from './Landing'
 import Navbar from './Navbar';
+import Mapview from './Mapview';
 import Login from './Login'
 import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
 
