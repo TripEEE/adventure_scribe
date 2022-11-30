@@ -65,6 +65,19 @@ const scribeDb = {
         throw err
       }
     },
+
+    //edit campaign
+    updateCampaign: async (campaign = {}) => {
+      const { query, values } = generateUpdateQuery('campaigns', campaign, { where: { id: campaign.id } })
+
+      try {
+        const result = await db.query(query, values)
+        return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
   },
 
   //create a single map
@@ -96,7 +109,8 @@ const scribeDb = {
       catch (err) {
         throw err
       }
-    },
+    }
+
   },
 
   //get a single marker
@@ -149,6 +163,18 @@ const scribeDb = {
       }
     },
 
+    //edit marker
+    updateMarker: async (marker = {}) => {
+      const { query, values } = generateUpdateQuery("markers", marker, { where: { id: marker.id } })
+
+      try {
+        const result = await db.query(query, values)
+        return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    }
   },
 
   //create a new note in a marker
