@@ -8,19 +8,17 @@ const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
 
-
-
 const campaignRoutes = require('./routes/campaigns')
-const userRoutes = require('./routes/login_register')
+const { userRoutes, jwtMiddleware } = require('./routes/login_register')
 
 const PORT = process.env.PORT || 3002;
 const app = express();
 
 app.set('view engine', 'ejs');
 
-
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(jwtMiddleware)
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.

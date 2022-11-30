@@ -4,7 +4,29 @@ const scribeDb = require('../db/scribe_db')
 const jwt = require('jsonwebtoken');
 
 
-const JWT_SIGNING_KEY = "sdkfljsldkfjsdlkfj0i234slfj234"
+const JWT_SIGNING_KEY = "keepitsecretkeepitsafe"
+
+const jwtMiddleware = (req, res, next) => {
+  const authHeader = req.header("Authorization");
+
+  if (!authHeader) {
+    res.status(403).send("no auth header")
+    return
+  }
+
+  const [_, token] = authHeader.split(" ")
+
+  try {
+    const tokenPayload = jwt.verify(token, JWT_SIGNING_KEY)
+    req.requestUserId = tokenPayload.user_id
+  } catch (e) {
+    res.status(403).send(e)
+    return
+  }
+
+
+  next()
+}
 
 router.get('/me', async (req, res) => {
   // todo: get userId from JWT token
@@ -69,4 +91,7 @@ router.post('/register', async (req, res) => {
   }
 });
 
-module.exports = router;
+
+exports.userRoutes = router;
+exports.jwtMiddleware = jwtMiddleware
+
