@@ -4,25 +4,29 @@ import Landing from './Landing'
 import Navbar from './Navbar';
 import Mapview from './Mapview';
 import Login from './Login'
-import { BrowserRouter as Router, Route, Routes} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import NotesList from './NotesList';
 
 function Application() {
   return (
     <main>
-      <Router>
-        <nav>
-      <Navbar />
-      <Mapview />
+      <nav>
+        <Navbar />
       </nav>
-          <Routes>
-            <Route path="/landing" element={<Landing/>}/>
-          </Routes>
-          <Routes>
-          <Route path="/login" element={<Login/>}/>
-          </Routes>
-        </Router>
+      <div class="">
+      <NotesList />
+      <Mapview />
+      </div>
+      <Router>
+        <Routes>
+          <Route path="/landing" element={<Landing />} />
+        </Routes>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
     </main>
-    
+
   );
 }
 

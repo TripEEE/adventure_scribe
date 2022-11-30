@@ -59,20 +59,20 @@ function Mapview() {
 
 
   return (
-    <MapContainer
-      crs={L.CRS.Simple}
-      bounds={bounds}
-      maxZoom={4.9}
-      minZoom={0}
-      onzoomstart={(e) => console.log(e)}
-      attributionControl={false}
-    >
-      <ImageOverlay
-        url={"https://i.redd.it/a57rfqm9nj071.jpg"}
+      <MapContainer
+        crs={L.CRS.Simple}
         bounds={bounds}
-      />
-      <LocationMarker />
-    </MapContainer>
+        maxZoom={4.9}
+        minZoom={0}
+        onzoomstart={(e) => console.log(e)}
+        attributionControl={false}
+      >
+        <ImageOverlay
+          url={"https://i.redd.it/a57rfqm9nj071.jpg"}
+          bounds={bounds}
+        />
+        <LocationMarker />
+      </MapContainer>
   );
 };
 
