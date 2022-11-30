@@ -213,6 +213,45 @@ router.post('/:campaign_id/markers/:marker_id/notes', async (req, res) => {
 
 });
 
+router.put('/:campaign_id/markers/:marker_id/notes/:note_id', async (req, res) => {
+
+  if (!req.params.campaign_id) {
+    res.status(400).send("missing campaign id")
+    return
+  }
+
+  if (!req.params.marker_id) {
+    res.status(400).send("missing marker id")
+    return
+  }
+
+  if (!req.params.note_id) {
+    res.status(400).send("missing note id")
+    return
+  }
+
+  try {
+    const noteToUpdate = await scribeDb.notes.getNoteById(req.params.note_id)
+    const updatedNote = {
+      id: req.params.note_id,
+      //takes first value that is not undefined
+      title: req.body.title ?? noteToUpdate.title,
+      description: req.body.description ?? noteToUpdate.description,
+      category: req.body.category ?? noteToUpdate.category,
+      marker_id: req.params.marker_id ?? noteToUpdate.marker_id
+    }
+
+    const note = await scribeDb.notes.updateNote(updatedNote)
+    console.log(note)
+    res.json(note)
+  }
+  catch (err) {
+    res.status(500).send(err)
+  }
+
+});
+
+
 // GET to api/campaigns
 
 router.get('/', async (req, res) => {
