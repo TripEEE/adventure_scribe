@@ -74,6 +74,10 @@ const inviteToCampaign = async (req, res) => {
 
 const createCampaign = async (req, res) => {
 
+  console.log(req.body)
+
+  //do not have default object here
+  //if !campaign, return
   const { campaign = {} } = req.body;
   const { map = {} } = campaign
   // if campaign title is not defined, throw error
@@ -111,7 +115,6 @@ const editCampaign = async (req, res) => {
     res.status(400).send("missing campaign id")
     return
   }
-  console.log(req.params.campaign_id)
 
   try {
     const campaignToUpdate = await scribeDb.campaigns.getById(req.params.campaign_id)
@@ -119,11 +122,25 @@ const editCampaign = async (req, res) => {
       id: req.params.campaign_id,
       name: req.body.name ?? campaignToUpdate.name
     }
-    console.log({ updatedCampaign })
 
     const campaign = await scribeDb.campaigns.updateCampaign(updatedCampaign)
-    console.log({ campaign })
     res.json(campaign)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+
+}
+
+const deleteCampaign = async (req, res) => {
+
+  if (!req.params.campaign_id) {
+    res.status(400).send("missing campaign id")
+    return
+  }
+
+  try {
+    await scribeDb.campaigns.deleteCampaign(req.params.campaign_id)
+    res.json("Campaign Deleted")
   } catch (err) {
     res.status(500).send(err)
   }
@@ -135,3 +152,4 @@ exports.getCampaignById = getCampaignById;
 exports.inviteToCampaign = inviteToCampaign;
 exports.createCampaign = createCampaign;
 exports.editCampaign = editCampaign;
+exports.deleteCampaign = deleteCampaign

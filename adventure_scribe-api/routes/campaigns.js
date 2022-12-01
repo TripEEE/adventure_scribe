@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { getCampaignById, inviteToCampaign, createCampaign, editCampaign, getCampaigns } = require('../handlers/campaigns');
-const { createMarker, getMarker, editMarker } = require('../handlers/markers');
-const { createNote, editNote } = require("../handlers/notes");
+const { getCampaignById, inviteToCampaign, createCampaign, editCampaign, getCampaigns, deleteCampaign } = require('../handlers/campaigns');
+const { createMarker, getMarker, editMarker, deleteMarker } = require('../handlers/markers');
+const { createNote, editNote, deleteNote } = require("../handlers/notes");
 const { authorizeCampaign } = require("../middleware/middleware")
 
 // Apply middleware on api/campaigns/:id
@@ -37,5 +37,14 @@ router.put('/:campaign_id/markers/:marker_id', editMarker);
 
 // PUT api/campaigns/:campaign_id/markers/:marker_id/notes/:note_id
 router.put('/:campaign_id/markers/:marker_id/notes/:note_id', editNote);
+
+// DELETE api/campaigns/:campaign_id
+router.delete('/:campaign_id', deleteCampaign)
+
+// DELETE api/campaigns/:campaign_id/markers/:marker_id
+router.delete('/:campaign_id/markers/:marker_id', deleteMarker)
+
+// DELETE api/campaigns/:campaign_id/markers/:marker_id/notes/:note_id
+router.delete('/:campaign_id/markers/:marker_id/notes/:note_id', deleteNote)
 
 module.exports = router;

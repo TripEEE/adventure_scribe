@@ -1,5 +1,5 @@
 const db = require('./connection')
-const { generateInsertQuery, generateSelectQuery, generateUpdateQuery } = require('./utils/query_generators');
+const { generateInsertQuery, generateSelectQuery, generateUpdateQuery, generateDeleteQuery } = require('./utils/query_generators');
 
 const scribeDb = {
 
@@ -78,6 +78,19 @@ const scribeDb = {
         throw err
       }
     },
+
+    //delete campaign
+    deleteCampaign: async (id) => {
+      const { query, values } = generateDeleteQuery('campaigns', { where: { id: id } })
+
+      try {
+        await db.query(query, values)
+        return
+      }
+      catch (err) {
+        throw err
+      }
+    }
   },
 
   //create a single map
@@ -109,7 +122,7 @@ const scribeDb = {
       catch (err) {
         throw err
       }
-    }
+    },
 
   },
 
@@ -170,6 +183,19 @@ const scribeDb = {
       try {
         const result = await db.query(query, values)
         return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    //delete marker
+    deleteMarker: async (id) => {
+      const { query, values } = generateDeleteQuery('markers', { where: { id: id } })
+
+      try {
+        await db.query(query, values)
+        return
       }
       catch (err) {
         throw err
@@ -237,6 +263,19 @@ const scribeDb = {
         throw err
       }
     },
+
+    //delete note
+    deleteNote: async (id) => {
+      const { query, values } = generateDeleteQuery('notes', { where: { id: id } })
+
+      try {
+        await db.query(query, values)
+        return
+      }
+      catch (err) {
+        throw err
+      }
+    }
   },
 
   //create a new user
@@ -322,7 +361,20 @@ const scribeDb = {
         throw err
       }
     },
-  },
+
+    //delete user from campaign
+    deleteUserFromCampaign: async (userId, campaignId) => {
+      const { query, values } = generateDeleteQuery('campaigns_users', { where: { campaign_id: campaignId, user_id: userId } })
+
+      try {
+        await db.query(query, values)
+        return
+      }
+      catch (err) {
+        throw err
+      }
+    }
+  }
 }
 
 module.exports = scribeDb
