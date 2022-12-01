@@ -4,6 +4,7 @@ import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState } from 'react';
+import Note from './Note';
 
 function LocationMarker(props) {
   const [markers, setMarkers] = useState(props.markers)
@@ -21,7 +22,7 @@ function LocationMarker(props) {
   const map = useMapEvents({
     click(e) {
       if (!isButtonClicked) {
-        let markerClick = { name: "Test", lat: e.latlng.lat, lon: e.latlng.lng};
+        let markerClick = { name: "Test", lat: e.latlng.lat, lon: e.latlng.lng };
         setMarkers(prev => [...prev, markerClick]);
       }
     },
@@ -36,7 +37,7 @@ function LocationMarker(props) {
   const removeMarker = (pos) => {
     setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
   }
-  
+
   return markers.map((marker, index) => {
     const position = [marker.lat, marker.lon];
     return (
@@ -62,6 +63,7 @@ function Mapview(props) {
   ];
 
   return (
+    <div className="mapDiv">
       <MapContainer
         crs={L.CRS.Simple}
         bounds={bounds}
@@ -74,8 +76,10 @@ function Mapview(props) {
           url={props.campaign.map.link}
           bounds={bounds}
         />
-        <LocationMarker markers={props.campaign.markers} changeMarker={props.changeMarker}/>
+        <LocationMarker markers={props.campaign.markers} changeMarker={props.changeMarker} />
       </MapContainer>
+      <Note />
+    </div>
   );
 };
 

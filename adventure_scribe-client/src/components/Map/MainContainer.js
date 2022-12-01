@@ -51,7 +51,7 @@ function MainContainer(props) {
   const changeMarker = (id) => {
     setCurrentMarker(id);
   }
-  
+
   useEffect(() => {
     console.log(currentMarker);
   })
@@ -67,16 +67,18 @@ function MainContainer(props) {
 
   // use link element from react router DOM instead of anchor href
   return (
-    <div className="d-flex">
-      <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
-        <div className="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
-          <svg className="bi pe-none me-2" width="30" height="24"></svg>
-          <span className="fs-5 fw-semibold">Notes</span>
+    <div>
+      <div className="d-flex">
+        <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+          <div className="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+            <svg className="bi pe-none me-2" width="30" height="24"></svg>
+            <span className="fs-5 fw-semibold">Notes</span>
+          </div>
+          {displayNotes}
+          <button type="button" className="btn btn-outline-success newNoteButton">Add New Note</button>
         </div>
-        {displayNotes}
-        <button type="button" className="btn btn-outline-success newNoteButton">Add New Note</button>
+        <Mapview campaign={campaign} changeMarker={changeMarker} />
       </div>
-      <Mapview campaign={campaign} changeMarker={changeMarker}/>
     </div>
   )
 }
