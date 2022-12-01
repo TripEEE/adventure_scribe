@@ -1,9 +1,11 @@
 import NoteItem from "./NoteItem";
 import Mapview from "./Mapview";
 import { useEffect, useState } from "react";
+import Note from "./Note";
 
 function MainContainer(props) {
   const [currentMarker, setCurrentMarker] = useState(null);
+  const [currentNote, setCurrentNote] = useState(null);
   const [campaign, setCampaign] = useState({
     map: {
       id: "1",
@@ -34,13 +36,13 @@ function MainContainer(props) {
 
   const [notes, setNotes] = useState([
     {
-      id: "1",
+      id: 1,
       title: "Big Bad Monster",
       description: "here is a description of the location",
       category: "Bestiary"
     },
     {
-      id: "2",
+      id: 2,
       title: "Barovia",
       description: "here is a description of the location that is more decriptive or something",
       category: "Location"
@@ -48,20 +50,18 @@ function MainContainer(props) {
   ]
   );
 
-  const changeMarker = (id) => {
-    setCurrentMarker(id);
-  }
-
   useEffect(() => {
-    console.log(currentMarker);
+    console.log(currentMarker, currentNote, notes);
   })
 
   const displayNotes = notes.map((note) => {
     return (
       <NoteItem key={note.id}
+        id={note.id}
         title={note.title}
         description={note.description}
-        category={note.category} />
+        category={note.category}
+        setCurrentNote={setCurrentNote} />
     )
   })
 
@@ -69,15 +69,15 @@ function MainContainer(props) {
   return (
     <div>
       <div className="d-flex">
-        <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+        { currentMarker ? <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
           <div className="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
             <svg className="bi pe-none me-2" width="30" height="24"></svg>
             <span className="fs-5 fw-semibold">Notes</span>
           </div>
           {displayNotes}
           <button type="button" className="btn btn-outline-success newNoteButton">Add New Note</button>
-        </div>
-        <Mapview campaign={campaign} changeMarker={changeMarker} />
+        </div> : null}
+        <Mapview campaign={campaign} setCurrentMarker={setCurrentMarker} setCurrentNote={setCurrentNote} currentNote={currentNote} notes={notes.find(x => x.id === currentNote)}/>
       </div>
     </div>
   )

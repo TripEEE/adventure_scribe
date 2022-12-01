@@ -31,6 +31,7 @@ function LocationMarker(props) {
     },
     popupclose() {
       setisButtonClicked(false);
+      props.setCurrentMarker(0);
     }
   })
 
@@ -43,7 +44,7 @@ function LocationMarker(props) {
     return (
       <Marker key={index} icon={markerIconConst} position={position} eventHandlers={{
         click: () => {
-          props.changeMarker(marker.id);
+          props.setCurrentMarker(marker.id);
         }
       }}>
         <Popup>
@@ -76,9 +77,9 @@ function Mapview(props) {
           url={props.campaign.map.link}
           bounds={bounds}
         />
-        <LocationMarker markers={props.campaign.markers} changeMarker={props.changeMarker} />
+        <LocationMarker markers={props.campaign.markers} setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>
-      <Note />
+      {props.currentNote ? <Note setCurrentNote={props.setCurrentNote} notes={props.notes}/> : null}
     </div>
   );
 };
