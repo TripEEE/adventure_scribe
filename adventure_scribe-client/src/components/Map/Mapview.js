@@ -6,7 +6,7 @@ import "leaflet/dist/leaflet.css";
 import { useState } from 'react';
 
 function LocationMarker(props) {
-  const [position, setPosition] = useState([])
+  const [markers, setMarkers] = useState(props.markers)
   const [isButtonClicked, setisButtonClicked] = useState(false);
 
   const markerIconConst = L.icon({
@@ -21,9 +21,9 @@ function LocationMarker(props) {
   const map = useMapEvents({
     click(e) {
       if (!isButtonClicked) {
-        console.log(e);
-        let markerClick = [e.latlng.lat, e.latlng.lng];
-        setPosition(prev => [...prev, markerClick]);
+        let markerClick = { name: "Test", lat: e.latlng.lat, lon: e.latlng.lng};
+        setMarkers(prev => [...prev, markerClick]);
+        console.log(markers);
       }
     },
     popupopen() {
@@ -37,28 +37,28 @@ function LocationMarker(props) {
   })
 
   const removeMarker = (pos) => {
-    console.log(pos, position, isButtonClicked);
-    setPosition(current => current.filter(P => { return P !== pos }));
+    console.log(pos, isButtonClicked);
+    setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
   }
 
-  return position.map((marker) => {
+  return markers.map((marker, index) => {
+    const position = [marker.lat, marker.lon];
     return (
-      <Marker icon={markerIconConst} position={marker}>
+      <Marker key={index} icon={markerIconConst} position={position}>
         <Popup>
-          <button onClick={() => removeMarker(marker)}>Remove marker</button>
+          <h4>{marker.name}</h4>
+          <button onClick={() => removeMarker(position)}>Remove marker</button>
         </Popup>
       </Marker>
     )
   })
 }
 
-function Mapview() {
-
+function Mapview(props) {
   var bounds = [
     [1000, 0],
     [0, 1500],
   ];
-
 
   return (
       <MapContainer
@@ -70,10 +70,10 @@ function Mapview() {
         attributionControl={false}
       >
         <ImageOverlay
-          url={"https://i.redd.it/a57rfqm9nj071.jpg"}
+          url={props.campaign.map.link}
           bounds={bounds}
         />
-        <LocationMarker />
+        <LocationMarker markers={props.campaign.markers}/>
       </MapContainer>
   );
 };
