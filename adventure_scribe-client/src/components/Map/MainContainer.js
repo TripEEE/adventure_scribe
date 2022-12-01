@@ -1,8 +1,9 @@
 import NoteItem from "./NoteItem";
 import Mapview from "./Mapview";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function MainContainer(props) {
+  const [currentMarker, setCurrentMarker] = useState(null);
   const [campaign, setCampaign] = useState({
     map: {
       id: "1",
@@ -11,16 +12,19 @@ function MainContainer(props) {
     },
     markers: [
       {
+        id: 1,
         name: "Location 1",
         lat: "350.25",
         lon: "500"
       },
       {
+        id: 2,
         name: "Location 2",
         lat: "600",
         lon: "800"
       },
       {
+        id: 3,
         name: "Location 3",
         lat: "700",
         lon: "900"
@@ -44,6 +48,14 @@ function MainContainer(props) {
   ]
   );
 
+  const changeMarker = (id) => {
+    setCurrentMarker(id);
+  }
+  
+  useEffect(() => {
+    console.log(currentMarker);
+  })
+
   const displayNotes = notes.map((note) => {
     return (
       <NoteItem key={note.id}
@@ -64,7 +76,7 @@ function MainContainer(props) {
         {displayNotes}
         <button type="button" className="btn btn-outline-success newNoteButton">Add New Note</button>
       </div>
-      <Mapview campaign={campaign}/>
+      <Mapview campaign={campaign} changeMarker={changeMarker}/>
     </div>
   )
 }

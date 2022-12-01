@@ -23,28 +23,28 @@ function LocationMarker(props) {
       if (!isButtonClicked) {
         let markerClick = { name: "Test", lat: e.latlng.lat, lon: e.latlng.lng};
         setMarkers(prev => [...prev, markerClick]);
-        console.log(markers);
       }
     },
     popupopen() {
       setisButtonClicked(true);
-      console.log(isButtonClicked);
     },
     popupclose() {
       setisButtonClicked(false);
-      console.log(isButtonClicked);
     }
   })
 
   const removeMarker = (pos) => {
-    console.log(pos, isButtonClicked);
     setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
   }
-
+  
   return markers.map((marker, index) => {
     const position = [marker.lat, marker.lon];
     return (
-      <Marker key={index} icon={markerIconConst} position={position}>
+      <Marker key={index} icon={markerIconConst} position={position} eventHandlers={{
+        click: () => {
+          props.changeMarker(marker.id);
+        }
+      }}>
         <Popup>
           <h4>{marker.name}</h4>
           <button onClick={() => removeMarker(position)}>Remove marker</button>
@@ -55,6 +55,7 @@ function LocationMarker(props) {
 }
 
 function Mapview(props) {
+
   var bounds = [
     [1000, 0],
     [0, 1500],
@@ -73,7 +74,7 @@ function Mapview(props) {
           url={props.campaign.map.link}
           bounds={bounds}
         />
-        <LocationMarker markers={props.campaign.markers}/>
+        <LocationMarker markers={props.campaign.markers} changeMarker={props.changeMarker}/>
       </MapContainer>
   );
 };
