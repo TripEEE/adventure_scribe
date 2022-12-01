@@ -7,6 +7,7 @@ const JWT_SIGNING_KEY = "sdkfljsldkfjsdlkfj0i234slfj234"
 const jwtMiddleware = (req, res, next) => {
   const authHeader = req.header("Authorization");
 
+  console.log(authHeader)
   if (!authHeader) {
     res.status(403).send("no auth header")
     return
@@ -18,6 +19,7 @@ const jwtMiddleware = (req, res, next) => {
     const tokenPayload = jwt.verify(token, JWT_SIGNING_KEY)
     req.requestUserId = tokenPayload.user_id
   } catch (e) {
+    console.log(e)
     res.status(403).send(e)
     return
   }

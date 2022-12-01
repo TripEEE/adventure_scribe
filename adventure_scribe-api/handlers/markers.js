@@ -82,6 +82,28 @@ const editMarker = async (req, res) => {
 
 }
 
+const deleteMarker = async (req, res) => {
+
+  if (!req.params.campaign_id) {
+    res.status(400).send("missing campaign id")
+    return
+  }
+
+  if (!req.params.marker_id) {
+    res.status(400).send("missing marker id")
+    return
+  }
+
+  try {
+    await scribeDb.markers.deleteMarker(req.params.marker_id)
+    res.json("Marker Deleted")
+  } catch (err) {
+    res.status(500).send(err)
+  }
+
+}
+
 exports.createMarker = createMarker;
 exports.getMarker = getMarker;
 exports.editMarker = editMarker;
+exports.deleteMarker = deleteMarker;

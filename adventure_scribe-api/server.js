@@ -7,6 +7,7 @@ const express = require('express');
 const morgan = require('morgan');
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
 
 const campaignRoutes = require('./routes/campaigns')
 const { userRoutes } = require('./routes/login_register')
@@ -19,7 +20,17 @@ app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(cookieParser());
-app.use(jwtMiddleware)
+
+// Set up CORS: https://enable-cors.org/server_expressjs.html
+app.use(function (req, res, next) {
+  console.log("hello!")
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');
+  res.header('Access-Control-Allow-Credentials', true);
+  next();
+});
+app.options('*', cors())
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -36,10 +47,11 @@ app.use(
 );
 app.use(express.static('public'));
 
+
 // Mount all resource routes
 // Note: Feel free to replace the example routes below with your own
 // Note: Endpoints that return data (eg. JSON) usually start with `/api`
-app.use('/api/campaigns', campaignRoutes);
+app.use('/api/campaigns', jwtMiddleware, campaignRoutes);
 app.use(userRoutes)
 
 
