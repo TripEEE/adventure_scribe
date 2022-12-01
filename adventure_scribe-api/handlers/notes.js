@@ -68,5 +68,34 @@ const editNote = async (req, res) => {
 
 }
 
+
+const deleteNote = async (req, res) => {
+
+  if (!req.params.campaign_id) {
+    res.status(400).send("missing campaign id")
+    return
+  }
+
+  if (!req.params.marker_id) {
+    res.status(400).send("missing marker id")
+    return
+  }
+
+  if (!req.params.note_id) {
+    res.status(400).send("missing note id")
+    return
+  }
+
+  try {
+    await scribeDb.notes.deleteNote(req.params.note_id)
+    res.json("Note Deleted")
+  }
+  catch (err) {
+    res.status(500).send(err)
+  }
+
+}
+
 exports.createNote = createNote;
 exports.editNote = editNote;
+exports.deleteNote = deleteNote;

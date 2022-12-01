@@ -46,6 +46,18 @@ const generateUpdateQuery = (tableName, updatedObj = {}, queryObj = {}) => {
 
   return { query, values: [...updateValues, ...whereValues] }
 }
+
+const generateDeleteQuery = (tableName, queryObj = {}) => {
+
+  const whereEntries = Object.entries(queryObj.where)
+  const whereClauses = whereEntries.map((entry, idx) => `${entry[0]} = $${idx + 1}`).join(" AND ")
+  const whereValues = whereEntries.map(entry => entry[1])
+
+  const query = `DELETE FROM ${tableName} WHERE
+  ${whereClauses}`
+  return { query, values: whereValues }
+}
 exports.generateInsertQuery = generateInsertQuery
 exports.generateSelectQuery = generateSelectQuery
 exports.generateUpdateQuery = generateUpdateQuery
+exports.generateDeleteQuery = generateDeleteQuery

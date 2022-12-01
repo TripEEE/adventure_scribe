@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const scribeDb = require('../db/scribe_db')
 const jwt = require('jsonwebtoken');
-const JWT_SIGNING_KEY = require('../middleware/middleware')
+const { JWT_SIGNING_KEY } = require('../middleware/middleware')
 
 
 
@@ -38,6 +38,7 @@ router.post('/login', async (req, res) => {
       return
     }
 
+
     const token = jwt.sign({
       user_id: user.id,
       name: user.name,
@@ -45,10 +46,11 @@ router.post('/login', async (req, res) => {
     }, JWT_SIGNING_KEY);
 
     // issue jwt token and set cookies
-    res.cookie("auth_token", token)
+    res.cookie("auth_token", token, { expires: new Date(new Date().getTime() + (20 * 60000)) })
     res.json(token)
   }
   catch (err) {
+    console.log(err)
     res.status(500).send(err)
   }
 });
