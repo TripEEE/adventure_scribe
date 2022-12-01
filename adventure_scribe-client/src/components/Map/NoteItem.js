@@ -1,7 +1,7 @@
-import './NotesList.scss';
+import './NoteItem.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-function NotesList(props) {
+// Change to NoteItem
+function NoteItem(props) {
   return (
       <div class="list-group list-group-flush border-bottom scrollarea clickableNote">
         <a class="list-group-item list-group-item-action py-3 lh-sm" aria-current="true">
@@ -15,4 +15,4 @@ function NotesList(props) {
   );
 };
 
-export default NotesList;
+export default NoteItem;

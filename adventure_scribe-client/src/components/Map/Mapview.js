@@ -5,7 +5,7 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useState } from 'react';
 
-function LocationMarker() {
+function LocationMarker(props) {
   const [position, setPosition] = useState([])
   const [isButtonClicked, setisButtonClicked] = useState(false);
 

@@ -1,4 +1,4 @@
-import NotesList from "./NotesList";
+import NoteItem from "./NoteItem";
 import Mapview from "./Mapview";
 import { useState } from "react";
 
@@ -18,24 +18,23 @@ function MainContainer(props) {
     }
   ]
   );
-  const [selectNote, setSelectNote] = useState()
 
   const displayNotes = notes.map((note) => {
     return (
-      <NotesList key={note.id}
+      <NoteItem key={note.id}
         title={note.title}
         description={note.description}
         category={note.category} />
     )
   })
-
+  // use link element from react router DOM instead of anchor href
   return (
     <div class="d-flex">
       <div class="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
-        <a href="/" class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
+        <div class="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
           <svg class="bi pe-none me-2" width="30" height="24"></svg>
           <span class="fs-5 fw-semibold">Notes</span>
-        </a>
+        </div>
         {displayNotes}
         <button type="button" class="btn btn-outline-success newNoteButton">Add New Note</button>
       </div>
