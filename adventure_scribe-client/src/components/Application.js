@@ -5,6 +5,7 @@ import Navbar from './Navbar';
 import Login from './Login'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import MainContainer from './Map/MainContainer';
+import Register from './Register';
 
 function Application() {
   return (
@@ -22,6 +23,9 @@ function Application() {
         </Routes>
         <Routes>
           <Route path="/login" element={<Login />} />
+        </Routes>
+        <Routes>
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Router>
     </main>
