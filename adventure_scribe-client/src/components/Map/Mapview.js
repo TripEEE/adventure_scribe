@@ -3,7 +3,7 @@ import { MapContainer, ImageOverlay, Marker, Popup, useMapEvents } from 'react-l
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Note from './Note';
 
 function LocationMarker(props) {
@@ -79,7 +79,9 @@ function Mapview(props) {
         />
         <LocationMarker markers={props.campaign.markers} setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>
-      {props.currentNote ? <Note setCurrentNote={props.setCurrentNote} notes={props.notes}/> : null}
+      {props.noteView ? <Note notes={props.notes} 
+      noteView={props.noteView}
+      setNoteView={props.setNoteView}/> : null}
     </div>
   );
 };

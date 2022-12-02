@@ -6,6 +6,7 @@ import Note from "./Note";
 function MainContainer(props) {
   const [currentMarker, setCurrentMarker] = useState(null);
   const [currentNote, setCurrentNote] = useState(null);
+  const [noteView, setNoteView] = useState(null);
   const [campaign, setCampaign] = useState({
     map: {
       id: "1",
@@ -51,7 +52,7 @@ function MainContainer(props) {
   );
 
   useEffect(() => {
-    console.log(currentMarker, currentNote, notes);
+    console.log(currentMarker, currentNote, notes, noteView);
   })
 
   const displayNotes = notes.map((note) => {
@@ -61,7 +62,8 @@ function MainContainer(props) {
         title={note.title}
         description={note.description}
         category={note.category}
-        setCurrentNote={setCurrentNote} />
+        setCurrentNote={setCurrentNote}
+        setNoteView={setNoteView} />
     )
   })
 
@@ -69,15 +71,20 @@ function MainContainer(props) {
   return (
     <div>
       <div className="d-flex">
-        { currentMarker ? <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
+        {currentMarker ? <div className="d-flex flex-column align-items-stretch flex-shrink-0 bg-white">
           <div className="d-flex align-items-center flex-shrink-0 p-3 link-dark text-decoration-none border-bottom">
             <svg className="bi pe-none me-2" width="30" height="24"></svg>
             <span className="fs-5 fw-semibold">Notes</span>
           </div>
           {displayNotes}
-          <button type="button" className="btn btn-outline-success newNoteButton">Add New Note</button>
+          <button type="button" className="btn btn-outline-success newNoteButton" onClick={() => setNoteView("CREATE")}>Add New Note</button>
         </div> : null}
-        <Mapview campaign={campaign} setCurrentMarker={setCurrentMarker} setCurrentNote={setCurrentNote} currentNote={currentNote} notes={notes.find(x => x.id === currentNote)}/>
+      <Mapview campaign={campaign}
+        setCurrentMarker={setCurrentMarker}
+        noteView={noteView}
+        setNoteView={setNoteView}
+        notes={notes.find(x => x.id === currentNote)}
+      />
       </div>
     </div>
   )
