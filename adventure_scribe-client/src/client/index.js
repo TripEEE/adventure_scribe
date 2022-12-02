@@ -20,7 +20,6 @@ export const getCookie = (key) => {
 const client = {
 
   login: async (email, password) => {
-    console.log('login')
     try {
       const response = await axios.post(
         'http://localhost:3002/login', {
@@ -44,8 +43,6 @@ const client = {
         }
       }
       );
-
-      console.log(response.data)
 
       return response.data
     } catch (err) {

@@ -8,8 +8,8 @@ const createMarker = async (req, res) => {
     return
   }
 
-  if (!req.body.name || !req.body.location) {
-    res.status(400).send("invalid request")
+  if (!req.body.name || !req.body.lon || !req.body.lat) {
+    res.status(400).send("Invalid request")
     return
   }
 
@@ -17,7 +17,8 @@ const createMarker = async (req, res) => {
     const map = await scribeDb.maps.getByCampaignId(req.params.campaign_id)
     const marker = await scribeDb.markers.create({
       name: req.body.name,
-      location: req.body.location,
+      lon: req.body.lon,
+      lat: req.body.lat,
       map_id: map.id
     })
 
@@ -70,7 +71,9 @@ const editMarker = async (req, res) => {
       map_id: markerToUpdate.map_id,
       name: req.body.name ?? markerToUpdate.name,
       category: req.body.category ?? markerToUpdate.category,
-      location: req.body.location ?? markerToUpdate.location
+      lon: req.body.lon ?? markerToUpdate.lon,
+      lat: req.body.lat ?? markerToUpdate.lat
+
     }
 
     const marker = await scribeDb.markers.updateMarker(updatedMarker)
