@@ -15,7 +15,7 @@ function Navbar() {
           </form>
           <div className="text-end">
             <button href="/login" type="button" className="btn btn-outline-light me-2">Login</button>
-            <button href="/resgistration" type="button" className="btn btn-warning">Sign-up</button>
+            <button href="/registration" type="button" className="btn btn-warning">Sign-up</button>
           </div>
         </div>
       </div>
