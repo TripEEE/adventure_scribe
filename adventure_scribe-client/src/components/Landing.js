@@ -7,6 +7,7 @@ const Landing = () => {
 
   const [me, setMe] = useState({})
   const [myCampaigns, setMyCampaigns] = useState([])
+  const [showForm, setShowForm] = useState(false)
 
   const _getMe = async () => {
     const resp = await client.getMe()
@@ -29,20 +30,32 @@ const Landing = () => {
     _getMyCampaigns()
   }, [])
 
-  console.log(me)
-
-  return <div>
-    Hello {me.name}
-    <div>
+  return <div className="wrapper">
+    <h1 className="welcome">Welcome, {me.name}!</h1>
+    <h2 className="yourCampaigns">Your Campaigns:</h2>
+    <div className="campaigns">
       {myCampaigns.map(campaign =>
-        <div onClick={_navigateToCampaign(campaign.id)}>
+        <div style={{ backgroundImage: {} }} className="campaigns__campaign" key={campaign.id} onClick={_navigateToCampaign(campaign.id)}>
           {campaign.name}
         </div>
       )}
+      <div className="campaigns__createCampaign" onClick={showForm}>
+        <p>+</p>
+      </div>
     </div>
+    {showForm && (
+      <form name="newCampaign" onSubmit={(event) => event.preventDefault()} action="http://localhost:3002/api/campaigns" method="POST">
+        My Form
+        <input
+          name="campaignName"
+          type="text"
+          placeholder="Enter Campaign Name"
+        />
+
+
+      </form>
+    )}
   </div>
 }
-
-
 
 export default Landing;

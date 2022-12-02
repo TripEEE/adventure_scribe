@@ -1,2 +1,46 @@
+.wrapper {
+  margin: 6rem 19rem;
+  border: dotted white 2px;
+
+  .yourCampaigns {
+    margin: 50px 100px;
+  }
+
+  .campaigns {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin: 50px 100px;
+    border: solid aqua 1px;
+
+    .campaigns__campaign {
+      // make a table with max columns?
+      padding: 40px;
+      margin: 20px;
+      border: solid green 1px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .campaigns__createCampaign {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: solid rgb(162, 66, 162) 4px;
+      border-radius: 50%;
+      width: 80px;
+      height: 80px;
+      padding: 40px;
+      margin: 20px;
 
 
+      p {
+        font-size: 54px;
+        font-weight: 25000;
+        margin: 0 auto;
+        margin-bottom: .1em;
+      }
+    }
+  }
+}

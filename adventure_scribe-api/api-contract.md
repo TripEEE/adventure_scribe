@@ -11,7 +11,6 @@ req: {
   email: "users_email"
 }
 
-
 POST /login
 req: {
   password: "users_password",
@@ -80,8 +79,8 @@ res: {
   markers: [
     {
       name: "marker_title",
-      //leaflet will likely dictate how the database will be structured on marker coordinates
-      location: ""
+      lon: "marker_lon"
+      lat: "marker_lat
     }
   ]
 }
@@ -90,7 +89,8 @@ res: {
 POST /campaign/:campaign_id/markers
 req: {
   name: "marker_title",
-  location: ""
+  lon: "marker_lon"
+  lat: "marker_lat
 }
 
 // Campaign Page 2
