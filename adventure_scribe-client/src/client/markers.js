@@ -4,7 +4,7 @@ import { getCookie } from './index'
 export const getMarker = async (campaign_id, marker_id) => {
   try {
     const response = await axios.get(
-      `http://localhost:3002/api/${campaign_id}/markers/${marker_id}`, {
+      `http://localhost:3002/api/campaigns/${campaign_id}/markers/${marker_id}`, {
       headers: {
         authorization: `Bearer ${getCookie('auth_token')}`
       }

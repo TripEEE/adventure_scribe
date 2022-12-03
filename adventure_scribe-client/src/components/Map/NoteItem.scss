@@ -1,9 +1,3 @@
-main {
-  max-height: 100vh;
-  overflow-x: auto;
-  overflow-y: hidden;
-}
-
 .dropdown-toggle { outline: 0; }
 
 .newNoteButton {
@@ -13,5 +7,10 @@ main {
 }
 
 .clickableNote {
+  display: -webkit-box;
   cursor: pointer;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

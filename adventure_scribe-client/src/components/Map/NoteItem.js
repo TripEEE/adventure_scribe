@@ -9,7 +9,7 @@ function NoteItem(props) {
             <strong className="mb-1">{props.title}</strong>
             <strong className="mb-1">{props.category}</strong>
           </div>
-          <div className="col-10 mb-1 small">{props.description}</div>
+          <div className="mb-1 small">{props.description}</div>
         </div>
       </div>
   );

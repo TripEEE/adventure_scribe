@@ -31,7 +31,7 @@ function LocationMarker(props) {
     },
     popupclose() {
       setisButtonClicked(false);
-      props.setCurrentMarker(0);
+      props.setCurrentMarker(null);
     }
   })
 
@@ -48,8 +48,10 @@ function LocationMarker(props) {
         }
       }}>
         <Popup>
-          <h4>{marker.name}</h4>
-          <button onClick={() => removeMarker(position)}>Remove marker</button>
+          <div className="text-center">
+            <h4>{marker.name}</h4>
+            <button onClick={() => removeMarker(position)}>Remove marker</button>
+          </div>
         </Popup>
       </Marker>
     )
@@ -62,8 +64,6 @@ function Mapview(props) {
     [1000, 0],
     [0, 1500],
   ];
-
-  console.log(props, "HERE!!!!!!!!!!!!!!");
 
   return (
     <div className="mapDiv">
@@ -81,9 +81,9 @@ function Mapview(props) {
         />
         <LocationMarker markers={props.campaign.markers} setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>
-      {props.noteView ? <Note notes={props.notes} 
-      noteView={props.noteView}
-      setNoteView={props.setNoteView}/> : null}
+      {props.noteView ? <Note notes={props.notes}
+        noteView={props.noteView}
+        setNoteView={props.setNoteView} /> : null}
     </div>
   );
 };
