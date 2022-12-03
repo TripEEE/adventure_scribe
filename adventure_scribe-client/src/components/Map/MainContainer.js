@@ -3,6 +3,7 @@ import Mapview from "./Mapview";
 import { useEffect, useState } from "react";
 import client from "../../client";
 
+
 // {
 //   map: {
 //     id: "1",
@@ -37,6 +38,20 @@ function MainContainer(props) {
   const [noteView, setNoteView] = useState(null);
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [notes, setNotes] = useState([
+    // {
+    //   id: 1,
+    //   title: "Big Bad Monster",
+    //   description: "here is a description of the location",
+    //   category: "Bestiary"
+    // },
+    // {
+    //   id: 2,
+    //   title: "Barovia",
+    //   description: "here is a description of the location that is more decriptive or something",
+    //   category: "Location"
+    // }
+  ]);
   
   const _getCampaign = async () => {
     const resp = await client.getCampaignById(props.id);
@@ -45,28 +60,19 @@ function MainContainer(props) {
     console.log(resp);
   }
 
-  
-  const [notes, setNotes] = useState([
-    {
-      id: 1,
-      title: "Big Bad Monster",
-      description: "here is a description of the location",
-      category: "Bestiary"
-    },
-    {
-      id: 2,
-      title: "Barovia",
-      description: "here is a description of the location that is more decriptive or something",
-      category: "Location"
-    }
-  ]
-  );
+  const _getMarker = async () => {
+    const resp = await client.getMarker(1, 1);
+    setNotes(resp);
+    console.log(resp, "HERE!!!!!!!!!!!!!!!!!!!!!");
+  }
 
   useEffect(() => {
+    _getMarker();
     _getCampaign();
   }, []);
 
-  const displayNotes = notes.map((note) => {
+  const displayNotes = notes?.map((note) => {
+
     return (
       <NoteItem key={note.id}
         id={note.id}
@@ -94,7 +100,7 @@ function MainContainer(props) {
         setCurrentMarker={setCurrentMarker}
         noteView={noteView}
         setNoteView={setNoteView}
-        notes={notes.find(x => x.id === currentNote)}
+        notes={notes?.find(x => x.id === currentNote)}
       /> : "Loading..."}
       </div>
     </div>
