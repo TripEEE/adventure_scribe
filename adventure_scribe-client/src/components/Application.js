@@ -19,7 +19,7 @@ function Application() {
           <Route path="/landing" element={<Landing />} />
         </Routes>
         <Routes>
-          <Route path="/campaign" element={<MainContainer />} />
+          <Route path="/campaign" element={<MainContainer id={2}/>} />
         </Routes>
         <Routes>
           <Route path="/login" element={<Login />} />

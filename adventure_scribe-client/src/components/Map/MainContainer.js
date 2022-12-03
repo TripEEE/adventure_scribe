@@ -1,40 +1,51 @@
 import NoteItem from "./NoteItem";
 import Mapview from "./Mapview";
 import { useEffect, useState } from "react";
-import Note from "./Note";
+import client from "../../client";
+
+// {
+//   map: {
+//     id: "1",
+//     name: "Barovia",
+//     link: "https://i.redd.it/a57rfqm9nj071.jpg"
+//   },
+//   markers: [
+//     {
+//       id: 1,
+//       name: "Location 1",
+//       lat: "350.25",
+//       lon: "500"
+//     },
+//     {
+//       id: 2,
+//       name: "Location 2",
+//       lat: "600",
+//       lon: "800"
+//     },
+//     {
+//       id: 3,
+//       name: "Location 3",
+//       lat: "700",
+//       lon: "900"
+//     }
+//   ]
+// }
 
 function MainContainer(props) {
   const [currentMarker, setCurrentMarker] = useState(null);
   const [currentNote, setCurrentNote] = useState(null);
   const [noteView, setNoteView] = useState(null);
-  const [campaign, setCampaign] = useState({
-    map: {
-      id: "1",
-      name: "Barovia",
-      link: "https://i.redd.it/a57rfqm9nj071.jpg"
-    },
-    markers: [
-      {
-        id: 1,
-        name: "Location 1",
-        lat: "350.25",
-        lon: "500"
-      },
-      {
-        id: 2,
-        name: "Location 2",
-        lat: "600",
-        lon: "800"
-      },
-      {
-        id: 3,
-        name: "Location 3",
-        lat: "700",
-        lon: "900"
-      }
-    ]
-  })
+  const [campaign, setCampaign] = useState(null);
+  const [loading, setLoading] = useState(true);
+  
+  const _getCampaign = async () => {
+    const resp = await client.getCampaignById(props.id);
+    setCampaign(resp);
+    setLoading(false);
+    console.log(resp);
+  }
 
+  
   const [notes, setNotes] = useState([
     {
       id: 1,
@@ -52,8 +63,8 @@ function MainContainer(props) {
   );
 
   useEffect(() => {
-    console.log(currentMarker, currentNote, notes, noteView);
-  })
+    _getCampaign();
+  }, []);
 
   const displayNotes = notes.map((note) => {
     return (
@@ -79,12 +90,12 @@ function MainContainer(props) {
           {displayNotes}
           <button type="button" className="btn btn-outline-success newNoteButton" onClick={() => setNoteView("CREATE")}>Add New Note</button>
         </div> : null}
-      <Mapview campaign={campaign}
+        {!loading ? <Mapview campaign={campaign}
         setCurrentMarker={setCurrentMarker}
         noteView={noteView}
         setNoteView={setNoteView}
         notes={notes.find(x => x.id === currentNote)}
-      />
+      /> : "Loading..."}
       </div>
     </div>
   )

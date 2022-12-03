@@ -6,7 +6,6 @@ import Edit from './NoteViews/Edit';
 import Create from './NoteViews/Create';
 
 function Note(props) {
-  console.log(props.noteView, "HERE!!");
   return (
     <div className="noteDiv">
       {props.noteView === "VIEW" && <View notes={props.notes} setNoteView={props.setNoteView}/>}

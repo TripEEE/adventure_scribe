@@ -63,6 +63,8 @@ function Mapview(props) {
     [0, 1500],
   ];
 
+  console.log(props, "HERE!!!!!!!!!!!!!!");
+
   return (
     <div className="mapDiv">
       <MapContainer
