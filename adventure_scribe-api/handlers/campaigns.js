@@ -22,7 +22,7 @@ const getCampaigns = async (req, res) => {
 }
 
 const getCampaignById = async (req, res) => {
-
+  console.log('this is campaignsbyId')
   if (!req.params.id) {
     res.status(400).send("missing campaign id")
     return
@@ -156,9 +156,25 @@ const deleteCampaign = async (req, res) => {
 
 }
 
+const search = async (req, res) => {
+  if (!req.query.term) {
+    res.json([])
+    return
+  }
+
+  try {
+    const response = await scribeDb.notes.search(req.query.term)
+    res.json(response)
+  } catch (err) {
+    res.status(500).send(err)
+  }
+
+}
+
 exports.getCampaigns = getCampaigns;
 exports.getCampaignById = getCampaignById;
 exports.inviteToCampaign = inviteToCampaign;
 exports.createCampaign = createCampaign;
 exports.editCampaign = editCampaign;
-exports.deleteCampaign = deleteCampaign
+exports.deleteCampaign = deleteCampaign;
+exports.search = search;

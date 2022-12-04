@@ -23,22 +23,22 @@ function Edit(props) {
       <div className="d-flex flex-row justify-content-between">
         <div className="d-flex flex-column col-4">
           <label htmlFor="Title">Title</label>
-          <input type="text" name="Title" onChange={(e) => setTitle(e.target.value)} defaultValue={props.notes.title}></input>
+          <input type="text" name="Title" onChange={(e) => setTitle(e.target.value)} defaultValue={props.notes?.title}></input>
         </div>
         <div className="d-flex flex-column justify-content-end col-3">
           <label htmlFor="Category">Category</label>
-          <input type="text" name="Category" onChange={(e) => setCategory(e.target.value)} defaultValue={props.notes.category}></input>
+          <input type="text" name="Category" onChange={(e) => setCategory(e.target.value)} defaultValue={props.notes?.category}></input>
         </div>
       </div>
       <div className="d-flex flex-column">
         <label htmlFor="Description">Description</label>
-        <textarea name="Description" id="description" onChange={(e) => setDescription(e.target.value)} defaultValue={props.notes.description}></textarea>
+        <textarea name="Description" id="description" onChange={(e) => setDescription(e.target.value)} defaultValue={props.notes?.description}></textarea>
       </div>
       <div className="d-flex justify-content-between">
         <button className="btn btn-outline-light" type="button" onClick={() => _editNote(props.campaignID, props.currentMarker, props.notes.id, {
-            title: title,
-            description: description,
-            category: category
+          title: title,
+          description: description,
+          category: category
         })}>Save</button>
         <button className="btn btn-outline-light" type="button" onClick={() => props.setNoteView("VIEW")}>Cancel</button>
       </div>

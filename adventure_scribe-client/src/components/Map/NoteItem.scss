@@ -1,4 +1,14 @@
-.dropdown-toggle { outline: 0; }
+main {
+  background-color: rgb(51, 55, 62);
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+.dropdown-toggle {
+  outline: 0;
+}
 
 .newNoteButton {
   margin-top: 20px;

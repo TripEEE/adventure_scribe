@@ -3,6 +3,10 @@
   color: whitesmoke;
   max-width: 1320px;
 
+  .welcome {
+    margin-top: 40px;
+  }
+
   .yourCampaigns {
     margin: 50px 100px;
   }
@@ -13,7 +17,6 @@
     justify-content: space-between;
     align-items: center;
     margin: 50px 100px;
-    border: solid aqua 1px;
 
 
     .campaigns__campaign {
@@ -49,6 +52,28 @@
         margin: 0 auto;
         margin-bottom: .1em;
       }
+    }
+  }
+
+  .input {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+
+    .input-item {
+      max-height: 40px;
+      border: solid green 1px;
+    }
+
+    button {
+      background-color: gold;
+      margin-bottom: 24px;
+      text-align: center;
+
+
+
+
     }
   }
 }

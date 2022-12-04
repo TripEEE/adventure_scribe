@@ -5,3 +5,6 @@ CREATE TABLE maps (
   name VARCHAR(200) NOT NULL,
   link TEXT NOT NULL
 );
+
+CREATE INDEX maps_name_trgm ON maps USING gin (name gin_trgm_ops);
+

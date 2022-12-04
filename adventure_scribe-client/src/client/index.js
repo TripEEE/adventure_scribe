@@ -21,6 +21,40 @@ export const getCookie = (key) => {
 
 const client = {
 
+  search: async (term) => {
+    try {
+      const response = await axios.get(
+        'http://localhost:3002/api/campaigns/search', {
+        params: { term },
+        headers: {
+          authorization: `Bearer ${getCookie('auth_token')}`
+        }
+
+      })
+
+      return response.data
+
+    } catch (err) {
+      console.log(err)
+    }
+  },
+
+  register: async (username, email, password) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:3002/register', {
+        username,
+        email,
+        password
+      },
+      );
+
+      return response.data
+    } catch (err) {
+      console.error(err);
+    }
+  },
+
   login: async (email, password) => {
     try {
       const response = await axios.post(
