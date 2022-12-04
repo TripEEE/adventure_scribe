@@ -45,13 +45,9 @@ function LocationMarker(props) {
     popupclose() {
       setisButtonClicked(false);
       props.setCurrentMarker(null);
+      props.setNoteView(null);
     }
   })
-
-  // const removeMarker = (id) => {
-
-    // setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
-  // }
 
   return markers.map((marker, index) => {
     const position = [marker.lat, marker.lon];
@@ -94,6 +90,7 @@ function Mapview(props) {
           bounds={bounds}
         />
         <LocationMarker campaignID={props.campaign.id} 
+        setNoteView={props.setNoteView}
         markers={props.campaign.markers} 
         setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>

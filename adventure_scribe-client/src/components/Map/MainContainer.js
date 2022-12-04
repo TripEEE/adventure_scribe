@@ -58,6 +58,7 @@ function MainContainer(props) {
           </div>
         </div> : null}
         {!loading ? <Mapview campaign={campaign}
+          currentNote={currentNote}
           currentMarker={currentMarker}
           setCurrentMarker={setCurrentMarker}
           noteView={noteView}

@@ -11,11 +11,20 @@ function Note(props) {
   return (
     <div className="noteDiv">
       {props.noteView === "VIEW" && <View notes={props.notes} setNoteView={props.setNoteView}/>}
-      {props.noteView === "EDIT" && <Edit notes={props.notes} setNoteView={props.setNoteView} setNotes={props.setNotes}/>}
-      {props.noteView === "CREATE" && <Create setNoteView={props.setNoteView} 
+
+      {props.noteView === "EDIT" && <Edit
+      currentMarker={props.currentMarker}
+      campaignID={props.campaignID} 
+      notes={props.notes} 
+      setNoteView={props.setNoteView} 
+      setNotes={props.setNotes}/>}
+
+      {props.noteView === "CREATE" && <Create 
+      setNoteView={props.setNoteView} 
       setNotes={props.setNotes} 
       currentMarker={props.currentMarker} 
       campaignID={props.campaignID}/>}
+
       {props.noteView === "CONFIRM" && <Confirm setNoteView={props.setNoteView} setNotes={props.setNotes}/>}
     </div>
   )
