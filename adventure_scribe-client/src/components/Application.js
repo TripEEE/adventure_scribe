@@ -20,6 +20,7 @@ function Application() {
         </Routes>
         <Routes>
           <Route path="/campaign" element={<MainContainer id={2}/>} />
+          {/* <Route path="/campaign/:campaignId" element={<MainContainer />} /> */}
         </Routes>
         <Routes>
           <Route path="/login" element={<Login />} />

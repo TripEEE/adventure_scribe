@@ -1,6 +1,7 @@
 .wrapper {
-  margin: 6rem 19rem;
-  border: dotted white 2px;
+  margin: 0 auto;
+  color: whitesmoke;
+  max-width: 1320px;
 
   .yourCampaigns {
     margin: 50px 100px;
@@ -14,6 +15,7 @@
     margin: 50px 100px;
     border: solid aqua 1px;
 
+
     .campaigns__campaign {
       // make a table with max columns?
       padding: 40px;
@@ -21,6 +23,11 @@
       border: solid green 1px;
       border-radius: 8px;
       font-weight: bold;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center;
+      color: black;
+      cursor: pointer;
     }
 
     .campaigns__createCampaign {
@@ -33,6 +40,7 @@
       height: 80px;
       padding: 40px;
       margin: 20px;
+      cursor: pointer;
 
 
       p {

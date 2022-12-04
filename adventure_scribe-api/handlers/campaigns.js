@@ -1,4 +1,5 @@
 
+const { json } = require('body-parser')
 const scribeDb = require('../db/scribe_db')
 
 const getCampaigns = async (req, res) => {
@@ -6,7 +7,15 @@ const getCampaigns = async (req, res) => {
     const campaigns = await scribeDb.campaigns.getByUserId(
       req.requestUserId
     )
-    res.json(campaigns)
+    let campaignsWithMaps = []
+    for (let campaign of campaigns) {
+      const map = await scribeDb.maps.getByCampaignId(campaign.id)
+      campaignsWithMaps.push({
+        ...campaign,
+        map
+      })
+    }
+    res.json(campaignsWithMaps)
   } catch (err) {
     res.status(500).send(err)
   }
