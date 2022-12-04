@@ -98,6 +98,9 @@ function Mapview(props) {
         setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>
       {props.noteView ? <Note notes={props.notes}
+        campaignID={props.campaign.id}
+        currentMarker={props.currentMarker}
+        setNotes={props.setNotes}
         noteView={props.noteView}
         setNoteView={props.setNoteView} /> : null}
     </div>

@@ -6,12 +6,12 @@ import client from "../../client";
 function MainContainer(props) {
   const [currentMarker, setCurrentMarker] = useState(null);
   const [currentNote, setCurrentNote] = useState(null);
-  const [noteView, setNoteView] = useState(null);
+  
   const [campaign, setCampaign] = useState(null);
-
   const [loading, setLoading] = useState(true);
-
+  
   const [notes, setNotes] = useState(null);
+  const [noteView, setNoteView] = useState(null);
 
   const _getCampaign = async (id) => {
     const resp = await client.getCampaignById(id);
@@ -29,6 +29,7 @@ function MainContainer(props) {
     if (currentMarker) {
       _getMarker(props.id, currentMarker,);
     }
+    console.log(notes);
   }, [currentMarker, currentNote]);
 
   const displayNotes = notes?.map((note) => {
@@ -57,8 +58,10 @@ function MainContainer(props) {
           </div>
         </div> : null}
         {!loading ? <Mapview campaign={campaign}
+          currentMarker={currentMarker}
           setCurrentMarker={setCurrentMarker}
           noteView={noteView}
+          setNotes={setNotes}
           setNoteView={setNoteView}
           notes={notes?.find(x => x.id === currentNote)}
         /> : "Loading..."}
