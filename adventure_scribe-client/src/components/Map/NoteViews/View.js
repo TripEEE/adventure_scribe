@@ -1,4 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 function View(props) {
   return(
@@ -11,6 +13,7 @@ function View(props) {
       <p>{props.notes.description}</p>
       <div className="d-flex justify-content-between">
         <button className="btn btn-outline-light" type="button" onClick={() => props.setNoteView("EDIT")}>Edit</button>
+        <button className="btn btn-outline-light" type="button" onClick={() => props.setNoteView("CONFIRM")}><FontAwesomeIcon icon={faTrash} /></button>
         <button className="btn btn-outline-light" type="button" onClick={() => props.setNoteView(null)}>Close</button>
       </div>
     </div>
