@@ -2,7 +2,7 @@ import './Navbar.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function Navbar() {
+function Navbar({ onOpenSearchModal = () => { } }) {
   return (
     <header className="p-3 text-bg-dark">
       <div className="container">
@@ -12,9 +12,10 @@ function Navbar() {
             <li><a href="/landing" className="nav-link px-2 text-secondary">Home</a></li>
           </ul>
           <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
-            <input type="search" className="form-control form-control-dark text-bg-dark" placeholder="Search..." aria-label="Search"></input>
+
           </form>
           <div className="text-end">
+            <button className="btn btn-outline-light me-2" onClick={onOpenSearchModal}>Search</button>
             <button type="button" className="btn btn-outline-light me-2">Login</button>
             <button type="button" className="btn btn-warning">Sign-up</button>
           </div>

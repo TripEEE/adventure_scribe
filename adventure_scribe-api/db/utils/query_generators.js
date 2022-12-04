@@ -57,7 +57,143 @@ const generateDeleteQuery = (tableName, queryObj = {}) => {
   ${whereClauses}`
   return { query, values: whereValues }
 }
+// SELECT
+// notes.id AS note_id,
+// notes.title AS note_title,
+// notes.description AS note_description,
+// notes.category AS note_category,
+// markers.id AS marker_id,
+// markers.name AS marker_name,
+// markers.category AS marker_category,
+// maps.name AS map_name,
+// campaigns.name AS campaign_name,
+// campaigns.id AS campaign_id
+// FROM notes
+// INNER JOIN markers ON markers.id = notes.marker_id
+// INNER JOIN maps ON maps.id = markers.map_id
+// INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+// WHERE notes.description ilike '%danger%'
+// UNION (
+// SELECT
+// notes.id AS note_id,
+// notes.title AS note_title,
+// notes.description AS note_description,
+// notes.category AS note_category,
+// markers.id AS marker_id,
+// markers.name AS marker_name,
+// markers.category AS marker_category,
+// maps.name AS map_name,
+// campaigns.name AS campaign_name,
+// campaigns.id AS campaign_id
+// FROM notes
+// INNER JOIN markers ON markers.id = notes.marker_id
+// INNER JOIN maps ON maps.id = markers.map_id
+// INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+// WHERE notes.title ilike '%danger%')
+// UNION (
+// SELECT
+// notes.id AS note_id,
+// notes.title AS note_title,
+// notes.description AS note_description,
+// notes.category AS note_category,
+// markers.id AS marker_id,
+// markers.name AS marker_name,
+// markers.category AS marker_category,
+// maps.name AS map_name,
+// campaigns.name AS campaign_name,
+// campaigns.id AS campaign_id
+// FROM notes
+// INNER JOIN markers ON markers.id = notes.marker_id
+// INNER JOIN maps ON maps.id = markers.map_id
+// INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+// WHERE notes.category ilike '%danger%')
+// UNION (
+// SELECT
+// notes.id AS note_id,
+// notes.title AS note_title,
+// notes.description AS note_description,
+// notes.category AS note_category,
+// markers.id AS marker_id,
+// markers.name AS marker_name,
+// markers.category AS marker_category,
+// maps.name AS map_name,
+// campaigns.name AS campaign_name,
+// campaigns.id AS campaign_id
+// FROM notes
+// INNER JOIN markers ON markers.id = notes.marker_id
+// INNER JOIN maps ON maps.id = markers.map_id
+// INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+// WHERE markers.name ilike '%danger%')
+// UNION (
+// SELECT
+// notes.id AS note_id,
+// notes.title AS note_title,
+// notes.description AS note_description,
+// notes.category AS note_category,
+// markers.id AS marker_id,
+// markers.name AS marker_name,
+// markers.category AS marker_category,
+// maps.name AS map_name,
+// campaigns.name AS campaign_name,
+// campaigns.id AS campaign_id
+// FROM notes
+// INNER JOIN markers ON markers.id = notes.marker_id
+// INNER JOIN maps ON maps.id = markers.map_id
+// INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+// WHERE markers.category ilike '%danger%')
+// UNION (
+// SELECT
+// notes.id AS note_id,
+// notes.title AS note_title,
+// notes.description AS note_description,
+// notes.category AS note_category,
+// markers.id AS marker_id,
+// markers.name AS marker_name,
+// markers.category AS marker_category,
+// maps.name AS map_name,
+// campaigns.name AS campaign_name,
+// campaigns.id AS campaign_id
+// FROM notes
+// INNER JOIN markers ON markers.id = notes.marker_id
+// INNER JOIN maps ON maps.id = markers.map_id
+// INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+// WHERE campaigns.name ilike '%danger%')
+
+const generateSearchQuery = (term) => {
+  const searchableColumns = [
+    "notes.description",
+    "notes.title",
+    "notes.category",
+    "markers.name",
+    "markers.category",
+    "maps.name",
+    "campaigns.name"
+  ]
+
+  const query = searchableColumns.map((field) => {
+    return `SELECT
+  notes.id AS note_id,
+  notes.title AS note_title,
+  notes.description AS note_description,
+  notes.category AS note_category,
+  markers.id AS marker_id,
+  markers.name AS marker_name,
+  markers.category AS marker_category,
+  maps.name AS map_name,
+  campaigns.name AS campaign_name,
+  campaigns.id AS campaign_id
+  FROM notes
+  INNER JOIN markers ON markers.id = notes.marker_id
+  INNER JOIN maps ON maps.id = markers.map_id
+  INNER JOIN campaigns ON campaigns.id = maps.campaign_id
+  WHERE ${field} ilike $1`
+  }).join(" UNION ",)
+  return {
+    query, values: [`%${term}%`]
+  }
+}
 exports.generateInsertQuery = generateInsertQuery
 exports.generateSelectQuery = generateSelectQuery
 exports.generateUpdateQuery = generateUpdateQuery
 exports.generateDeleteQuery = generateDeleteQuery
+exports.generateSearchQuery = generateSearchQuery

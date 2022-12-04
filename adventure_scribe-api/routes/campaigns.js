@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
-const { getCampaignById, inviteToCampaign, createCampaign, editCampaign, getCampaigns, deleteCampaign } = require('../handlers/campaigns');
+const { getCampaignById, inviteToCampaign, createCampaign, editCampaign, getCampaigns, deleteCampaign, search } = require('../handlers/campaigns');
 const { createMarker, getMarker, editMarker, deleteMarker } = require('../handlers/markers');
 const { createNote, editNote, deleteNote } = require("../handlers/notes");
+
 const { authorizeCampaign } = require("../middleware/middleware")
+
+// SEARCH api/campaigns/search
+router.get('/search', search)
 
 // Apply middleware on api/campaigns/:id
 router.use('/:id', authorizeCampaign)

@@ -1,5 +1,5 @@
 const db = require('./connection')
-const { generateInsertQuery, generateSelectQuery, generateUpdateQuery, generateDeleteQuery } = require('./utils/query_generators');
+const { generateInsertQuery, generateSelectQuery, generateUpdateQuery, generateDeleteQuery, generateSearchQuery } = require('./utils/query_generators');
 
 const scribeDb = {
 
@@ -271,6 +271,19 @@ const scribeDb = {
       try {
         await db.query(query, values)
         return
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    search: async (term) => {
+      const { query, values } = generateSearchQuery(term)
+
+      console.log(query)
+      try {
+        const result = await db.query(query, values)
+        return result.rows
       }
       catch (err) {
         throw err

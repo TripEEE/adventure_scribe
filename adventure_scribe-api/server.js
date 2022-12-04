@@ -23,7 +23,6 @@ app.use(cookieParser());
 
 // Set up CORS: https://enable-cors.org/server_expressjs.html
 app.use(function (req, res, next) {
-  console.log("hello!")
   res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,UPDATE,OPTIONS');

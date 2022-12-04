@@ -92,8 +92,9 @@ const Landing = () => {
     </div>
     {
       showForm && (
-        <div>
+        <div className="input">
           <input
+            className="input-item"
             name="campaignName"
             type="text"
             placeholder="Enter Campaign Name"
@@ -101,6 +102,7 @@ const Landing = () => {
             onChange={_setFormValue("campaignName")}
           />
           <input
+            className="input-item"
             name="mapName"
             type="text"
             placeholder="Enter Map Name"
@@ -108,20 +110,21 @@ const Landing = () => {
             onChange={_setFormValue("mapName")}
           />
           <input
+            className="input-item"
             name="mapLink"
             type="text"
             placeholder="Enter Map Link"
             value={form.mapLink || ""}
             onChange={_setFormValue("mapLink")}
           />
+          <button className="input-item" onClick={_submitForm}>
+            Create New Campaign
+          </button>
           <div>
             {formErrors.map((error) => <div>
               {error}
             </div>)}
           </div>
-          <button onClick={_submitForm}>
-            Create New Campaign
-          </button>
         </div>
       )
     }
