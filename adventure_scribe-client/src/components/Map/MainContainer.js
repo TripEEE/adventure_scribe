@@ -6,10 +6,10 @@ import client from "../../client";
 function MainContainer(props) {
   const [currentMarker, setCurrentMarker] = useState(null);
   const [currentNote, setCurrentNote] = useState(null);
-  
+
   const [campaign, setCampaign] = useState(null);
   const [loading, setLoading] = useState(true);
-  
+
   const [notes, setNotes] = useState(null);
   const [noteView, setNoteView] = useState(null);
 
@@ -34,13 +34,13 @@ function MainContainer(props) {
 
   const displayNotes = notes?.map((note) => {
     return (
-      <NoteItem key={note.id}
-        id={note.id}
-        title={note.title}
-        description={note.description}
-        category={note.category}
-        setCurrentNote={setCurrentNote}
-        setNoteView={setNoteView} />
+        <NoteItem key={note.id}
+          id={note.id}
+          title={note.title}
+          description={note.description}
+          category={note.category}
+          setCurrentNote={setCurrentNote}
+          setNoteView={setNoteView} />
     )
   })
 
@@ -52,7 +52,9 @@ function MainContainer(props) {
             <svg className="bi pe-none me-2" width="30" height="24"></svg>
             <span className="fs-5 fw-semibold">Notes</span>
           </div>
+          <div class="parentDiv">
           {displayNotes}
+          </div>
           <div className="text-center">
             <button type="button" className="btn btn-outline-success newNoteButton" onClick={() => setNoteView("CREATE")}>Add New Note</button>
           </div>
