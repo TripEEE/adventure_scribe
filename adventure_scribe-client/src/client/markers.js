@@ -19,8 +19,8 @@ export const getMarker = async (campaign_id, marker_id) => {
 export const createMarker = async (campaign_id, body) => {
   try {
     const response = await axios.post(
-      `http://localhost:3002/api/campaigns/${campaign_id}/markers`, 
-        body,
+      `http://localhost:3002/api/campaigns/${campaign_id}/markers`,
+      body,
       {
         headers: {
           authorization: `Bearer ${getCookie('auth_token')}`
@@ -28,6 +28,22 @@ export const createMarker = async (campaign_id, body) => {
       }
     );
 
+    return response.data
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+export const deleteMarker = async (campaign_id, marker_id) => {
+  try {
+    const response = await axios.delete(
+      `http://localhost:3002/api/campaigns/${campaign_id}/markers/${marker_id}`, {
+      headers: {
+        authorization: `Bearer ${getCookie('auth_token')}`
+      }
+    }
+    );
+    
     return response.data
   } catch (err) {
     console.error(err);

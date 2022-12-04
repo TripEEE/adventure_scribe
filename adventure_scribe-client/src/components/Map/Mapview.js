@@ -23,6 +23,11 @@ function LocationMarker(props) {
     setMarkers(prev => [...prev, resp]);
   }
 
+  const _deleteMarker = async (campaignID, markerID) => {
+    await client.deleteMarker(campaignID, markerID);
+    setMarkers(current => current.filter(P => { return P.id !== markerID }));
+  }
+
   const map = useMapEvents({
     click(e) {
       if (!isButtonClicked) {
@@ -43,9 +48,10 @@ function LocationMarker(props) {
     }
   })
 
-  const removeMarker = (pos) => {
+  // const removeMarker = (id) => {
+
     // setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
-  }
+  // }
 
   return markers.map((marker, index) => {
     const position = [marker.lat, marker.lon];
@@ -58,7 +64,7 @@ function LocationMarker(props) {
         <Popup>
           <div className="text-center">
             <h4>{marker.name}</h4>
-            <button onClick={() => removeMarker(position)}>Remove marker</button>
+            <button onClick={() => _deleteMarker(props.campaignID, marker.id)}>Remove marker</button>
           </div>
         </Popup>
       </Marker>
