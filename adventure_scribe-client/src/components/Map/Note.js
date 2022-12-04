@@ -15,7 +15,7 @@ function Note(props) {
       {props.noteView === "EDIT" && <Edit
       currentMarker={props.currentMarker}
       campaignID={props.campaignID} 
-      notes={props.notes} 
+      notes={props.notes}
       setNoteView={props.setNoteView} 
       setNotes={props.setNotes}/>}
 
@@ -25,7 +25,12 @@ function Note(props) {
       currentMarker={props.currentMarker} 
       campaignID={props.campaignID}/>}
 
-      {props.noteView === "CONFIRM" && <Confirm setNoteView={props.setNoteView} setNotes={props.setNotes}/>}
+      {props.noteView === "CONFIRM" && <Confirm 
+      setNoteView={props.setNoteView} 
+      setNotes={props.setNotes}
+      campaignID={props.campaignID}
+      currentMarker={props.currentMarker}
+      notes={props.notes}/>}
     </div>
   )
 }
