@@ -5,9 +5,10 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { useEffect, useState } from 'react';
 import Note from './Note';
+import client from '../../client';
 
 function LocationMarker(props) {
-  const [markers, setMarkers] = useState(props.markers)
+  const [markers, setMarkers] = useState(props.markers || null)
   const [isButtonClicked, setisButtonClicked] = useState(false);
 
   const markerIconConst = L.icon({
@@ -17,13 +18,20 @@ function LocationMarker(props) {
     popupAnchor: [0, -40],
   })
 
-
+  const _createMarker = async (campaignID, marker_note) => {
+    const resp = await client.createMarker(campaignID, marker_note);
+    setMarkers(prev => [...prev, resp]);
+  }
 
   const map = useMapEvents({
     click(e) {
       if (!isButtonClicked) {
-        let markerClick = { name: "Test", lat: e.latlng.lat, lon: e.latlng.lng };
-        setMarkers(prev => [...prev, markerClick]);
+        
+        _createMarker(props.campaignID, {
+          lat: e.latlng.lat,
+          lon: e.latlng.lng,
+          name: "Test"
+        })
       }
     },
     popupopen() {
@@ -36,7 +44,7 @@ function LocationMarker(props) {
   })
 
   const removeMarker = (pos) => {
-    setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
+    // setMarkers(current => current.filter(P => { return P.lat !== pos[0] && P.lon !== pos[1] }));
   }
 
   return markers.map((marker, index) => {
@@ -62,7 +70,7 @@ function Mapview(props) {
 
   var bounds = [
     [1000, 0],
-    [0, 1500],
+    [0, 1500]
   ];
 
   return (
@@ -79,7 +87,9 @@ function Mapview(props) {
           url={props.campaign.map.link}
           bounds={bounds}
         />
-        <LocationMarker markers={props.campaign.markers} setCurrentMarker={props.setCurrentMarker} />
+        <LocationMarker campaignID={props.campaign.id} 
+        markers={props.campaign.markers} 
+        setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>
       {props.noteView ? <Note notes={props.notes}
         noteView={props.noteView}

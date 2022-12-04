@@ -8,9 +8,11 @@ function MainContainer(props) {
   const [currentNote, setCurrentNote] = useState(null);
   const [noteView, setNoteView] = useState(null);
   const [campaign, setCampaign] = useState(null);
+
   const [loading, setLoading] = useState(true);
+
   const [notes, setNotes] = useState(null);
-  
+
   const _getCampaign = async (id) => {
     const resp = await client.getCampaignById(id);
     setCampaign(resp);
@@ -22,17 +24,14 @@ function MainContainer(props) {
     setNotes(resp.notes);
   }
 
-  console.log(currentMarker, campaign);
-  
   useEffect(() => {
     _getCampaign(props.id);
     if (currentMarker) {
-    _getMarker(props.id, currentMarker);
+      _getMarker(props.id, currentMarker,);
     }
-  }, [currentMarker]);
+  }, [currentMarker, currentNote]);
 
   const displayNotes = notes?.map((note) => {
-
     return (
       <NoteItem key={note.id}
         id={note.id}
@@ -54,15 +53,15 @@ function MainContainer(props) {
           </div>
           {displayNotes}
           <div className="text-center">
-          <button type="button" className="btn btn-outline-success newNoteButton" onClick={() => setNoteView("CREATE")}>Add New Note</button>
+            <button type="button" className="btn btn-outline-success newNoteButton" onClick={() => setNoteView("CREATE")}>Add New Note</button>
           </div>
         </div> : null}
         {!loading ? <Mapview campaign={campaign}
-        setCurrentMarker={setCurrentMarker}
-        noteView={noteView}
-        setNoteView={setNoteView}
-        notes={notes?.find(x => x.id === currentNote)}
-      /> : "Loading..."}
+          setCurrentMarker={setCurrentMarker}
+          noteView={noteView}
+          setNoteView={setNoteView}
+          notes={notes?.find(x => x.id === currentNote)}
+        /> : "Loading..."}
       </div>
     </div>
   )
