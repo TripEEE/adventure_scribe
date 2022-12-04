@@ -40,7 +40,7 @@ function Edit(props) {
             description: description,
             category: category
         })}>Save</button>
-        <button className="btn btn-outline-light" type="button" onClick={() => props.setNoteView(null)}>Close</button>
+        <button className="btn btn-outline-light" type="button" onClick={() => props.setNoteView("VIEW")}>Cancel</button>
       </div>
     </div>
   )

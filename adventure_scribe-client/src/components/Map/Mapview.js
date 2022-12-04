@@ -31,7 +31,6 @@ function LocationMarker(props) {
   const map = useMapEvents({
     click(e) {
       if (!isButtonClicked) {
-        
         _createMarker(props.campaignID, {
           lat: e.latlng.lat,
           lon: e.latlng.lng,
@@ -52,10 +51,18 @@ function LocationMarker(props) {
   return markers.map((marker, index) => {
     const position = [marker.lat, marker.lon];
     return (
-      <Marker key={index} icon={markerIconConst} position={position} eventHandlers={{
+      <Marker 
+      // draggable={true}
+      key={index} 
+      icon={markerIconConst} 
+      position={position} 
+      eventHandlers={{
         click: () => {
           props.setCurrentMarker(marker.id);
-        }
+        },
+        // dragend: (e) => {
+        //   console.log(e, marker.id);
+        // }
       }}>
         <Popup>
           <div className="text-center">

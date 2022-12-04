@@ -52,7 +52,7 @@ function MainContainer(props) {
             <svg className="bi pe-none me-2" width="30" height="24"></svg>
             <span className="fs-5 fw-semibold">Notes</span>
           </div>
-          <div class="parentDiv">
+          <div className="parentDiv">
           {displayNotes}
           </div>
           <div className="text-center">
