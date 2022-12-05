@@ -49,3 +49,21 @@ export const deleteMarker = async (campaign_id, marker_id) => {
     console.error(err);
   }
 }
+
+export const editMarker = async (campaign_id, marker_id, body) => {
+  try {
+    const response = await axios.put(
+      `http://localhost:3002/api/campaigns/${campaign_id}/markers/${marker_id}`,
+      body,
+      {
+        headers: {
+          authorization: `Bearer ${getCookie('auth_token')}`
+        }
+      }
+    );
+    
+    return response.data
+  } catch (err) {
+    console.error(err);
+  }
+}

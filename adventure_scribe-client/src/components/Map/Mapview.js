@@ -3,14 +3,17 @@ import { MapContainer, ImageOverlay, Marker, Popup, useMapEvents } from 'react-l
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Note from './Note';
 import client from '../../client';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheck, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 function LocationMarker(props) {
   const [markers, setMarkers] = useState(props.markers || null)
   const [isButtonClicked, setisButtonClicked] = useState(false);
-
+  const [editMarkerTitle, setEditMarkerTitle] = useState({});
+  const [title, setTitle] = useState(null);
   const markerIconConst = L.icon({
     iconUrl: markerIcon,
     iconRetinaUrl: markerIcon,
@@ -18,14 +21,38 @@ function LocationMarker(props) {
     popupAnchor: [0, -40],
   })
 
+  const _editMarker = async (campaign_id, marker_id, body) => {
+    const resp = await client.editMarker(campaign_id, marker_id, body);
+    setMarkers(prev => {
+      let newMarkerName = prev;
+      let marker = newMarkerName.find(n => n.id === marker_id);
+      console.log(newMarkerName, marker, resp);
+      Object.assign(marker, resp);
+      return newMarkerName;
+    });
+    setEditMarkerTitle({});
+  }
+
   const _createMarker = async (campaignID, marker_note) => {
     const resp = await client.createMarker(campaignID, marker_note);
     setMarkers(prev => [...prev, resp]);
   }
-
+  
   const _deleteMarker = async (campaignID, markerID) => {
     await client.deleteMarker(campaignID, markerID);
     setMarkers(current => current.filter(P => { return P.id !== markerID }));
+  }
+console.log(title);
+  const editCheck = (id, name) => {
+    if (editMarkerTitle.id !== props.currentMarker || !editMarkerTitle.edit) {
+      return <div><h4 className="clickableHeader" onClick={() => setEditMarkerTitle({ id: id, edit: true })}>{name}</h4></div>
+    } else {
+      return <div className="d-flex align-items-center justify-content-center">
+        <input type="text" className="editTitleField" placeholder={name} onChange={(e) => setTitle(e.target.value)}></input>
+        <button type="button" className="btn btn-sm btn-light" onClick={() => _editMarker(props.campaignID, id, {name: title})}><FontAwesomeIcon icon={faCheck} /></button>
+        <button type="button" className="btn btn-sm btn-light" onClick={() => setEditMarkerTitle({})}><FontAwesomeIcon icon={faXmark} /></button>
+      </div>
+    }
   }
 
   const map = useMapEvents({
@@ -34,7 +61,7 @@ function LocationMarker(props) {
         _createMarker(props.campaignID, {
           lat: e.latlng.lat,
           lon: e.latlng.lng,
-          name: "Test"
+          name: "Edit Marker Title"
         })
       }
     },
@@ -51,23 +78,24 @@ function LocationMarker(props) {
   return markers.map((marker, index) => {
     const position = [marker.lat, marker.lon];
     return (
-      <Marker 
-      // draggable={true}
-      key={index} 
-      icon={markerIconConst} 
-      position={position} 
-      eventHandlers={{
-        click: () => {
-          props.setCurrentMarker(marker.id);
-        },
-        // dragend: (e) => {
-        //   console.log(e, marker.id);
-        // }
-      }}>
+      <Marker
+        draggable={true}
+        key={index}
+        icon={markerIconConst}
+        position={position}
+        eventHandlers={{
+          click: () => {
+            props.setCurrentMarker(marker.id);
+          },
+          dragend: (e) => {
+            console.log(e.target._latlng);
+            _editMarker(props.campaignID, marker.id, {lat: e.target._latlng.lat, lon: e.target._latlng.lng})
+          }
+        }}>
         <Popup>
           <div className="text-center">
-            <h4>{marker.name}</h4>
-            <button onClick={() => _deleteMarker(props.campaignID, marker.id)}>Remove marker</button>
+            {editCheck(marker.id, marker.name)}
+            <button className="btn btn-danger" onClick={() => _deleteMarker(props.campaignID, marker.id)}>Remove marker</button>
           </div>
         </Popup>
       </Marker>
@@ -96,10 +124,11 @@ function Mapview(props) {
           url={props.campaign.map.link}
           bounds={bounds}
         />
-        <LocationMarker campaignID={props.campaign.id} 
-        setNoteView={props.setNoteView}
-        markers={props.campaign.markers} 
-        setCurrentMarker={props.setCurrentMarker} />
+        <LocationMarker campaignID={props.campaign.id}
+          currentMarker={props.currentMarker}
+          setNoteView={props.setNoteView}
+          markers={props.campaign.markers}
+          setCurrentMarker={props.setCurrentMarker} />
       </MapContainer>
       {props.noteView ? <Note notes={props.notes}
         campaignID={props.campaign.id}

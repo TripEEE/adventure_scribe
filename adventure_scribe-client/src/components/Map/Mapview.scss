@@ -1,5 +1,5 @@
 .leaflet-container {
-  height: 89vh;
+  height: 89.5vh;
   width: 100%;
   z-index: 0;
 }
@@ -7,4 +7,10 @@
 .mapDiv {
   position: relative;
   width: 100%;
+}
+
+.editTitleField {
+  margin-top: 20px;
+  width: 200px;
+  height: 40px;
 }

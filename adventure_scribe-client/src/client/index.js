@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createCampaign, getCampaignById, getCampaigns, inviteUserToCampaign, deleteCampaign, editCampaign } from './campaigns';
-import { createMarker, deleteMarker, getMarker } from './markers';
+import { createMarker, deleteMarker, editMarker, getMarker } from './markers';
 import { createNote, deleteNote, editNote } from './notes';
 
 //each method corresponds to a route in the API
@@ -97,7 +97,8 @@ const client = {
   deleteMarker: deleteMarker,
   createNote: createNote,
   editNote: editNote,
-  deleteNote: deleteNote
+  deleteNote: deleteNote,
+  editMarker: editMarker
 
 }
 
