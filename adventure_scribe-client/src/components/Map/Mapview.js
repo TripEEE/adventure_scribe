@@ -72,7 +72,7 @@ function LocationMarker(props) {
       setisButtonClicked(false);
       props.setCurrentMarker(null);
       props.setNoteView(null);
-      // setEditMarkerTitle({id: null, edit: false});
+      setEditMarkerTitle({id: null, edit: false});
     }
   })
 
