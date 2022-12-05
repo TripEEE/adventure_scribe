@@ -21,37 +21,37 @@ function LocationMarker(props) {
     popupAnchor: [0, -40],
   })
 
+  console.log(markers, editMarkerTitle);
   const _editMarker = async (campaign_id, marker_id, body) => {
     const resp = await client.editMarker(campaign_id, marker_id, body);
     setMarkers(prev => {
       let newMarkerName = prev;
       let marker = newMarkerName.find(n => n.id === marker_id);
-      console.log(newMarkerName, marker, resp);
       Object.assign(marker, resp);
       return newMarkerName;
     });
-    setEditMarkerTitle({});
+    setEditMarkerTitle({id: null, edit: false});
   }
 
   const _createMarker = async (campaignID, marker_note) => {
     const resp = await client.createMarker(campaignID, marker_note);
     setMarkers(prev => [...prev, resp]);
   }
-  
+
   const _deleteMarker = async (campaignID, markerID) => {
     await client.deleteMarker(campaignID, markerID);
     setMarkers(current => current.filter(P => { return P.id !== markerID }));
   }
-console.log(title);
+
   const editCheck = (id, name) => {
     if (editMarkerTitle.id !== props.currentMarker || !editMarkerTitle.edit) {
-      return <div><h4 className="clickableHeader" onClick={() => setEditMarkerTitle({ id: id, edit: true })}>{name}</h4></div>
+      return (<h4 className="clickableHeader" onClick={(e) =>  {e.stopPropagation(); setEditMarkerTitle({id: id, edit: true});}}>{name}</h4>)
     } else {
-      return <div className="d-flex align-items-center justify-content-center">
+      return (<div className="d-flex align-items-center justify-content-center">
         <input type="text" className="editTitleField" placeholder={name} onChange={(e) => setTitle(e.target.value)}></input>
         <button type="button" className="btn btn-sm btn-light" onClick={() => _editMarker(props.campaignID, id, {name: title})}><FontAwesomeIcon icon={faCheck} /></button>
-        <button type="button" className="btn btn-sm btn-light" onClick={() => setEditMarkerTitle({})}><FontAwesomeIcon icon={faXmark} /></button>
-      </div>
+        <button type="button" className="btn btn-sm btn-light" onClick={() => _editMarker(props.campaignID, id)}><FontAwesomeIcon icon={faXmark} /></button>
+      </div>)
     }
   }
 
@@ -61,7 +61,7 @@ console.log(title);
         _createMarker(props.campaignID, {
           lat: e.latlng.lat,
           lon: e.latlng.lng,
-          name: "Edit Marker Title"
+          name: "Placeholder"
         })
       }
     },
@@ -72,6 +72,7 @@ console.log(title);
       setisButtonClicked(false);
       props.setCurrentMarker(null);
       props.setNoteView(null);
+      // setEditMarkerTitle({id: null, edit: false});
     }
   })
 

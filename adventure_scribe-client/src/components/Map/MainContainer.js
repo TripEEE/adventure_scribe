@@ -50,7 +50,7 @@ function MainContainer() {
 
     setSearchParams({})
 
-  }, [])
+  }, [currentMarker])
 
   useEffect(() => {
     _getCampaign(campaignId);
