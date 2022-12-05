@@ -9,6 +9,12 @@
   width: 100%;
 }
 
+.clickableHeader:hover {
+  cursor: pointer;
+  background-color:rgb(218, 227, 230);
+  border-radius: 10px;
+}
+
 .editTitleField {
   margin-top: 20px;
   width: 200px;
