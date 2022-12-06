@@ -74,6 +74,7 @@ const client = {
       );
 
       document.cookie = `auth_token=${response.data}`
+      return document.cookie;
     } catch (err) {
       console.error(err);
     }

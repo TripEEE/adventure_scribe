@@ -16,8 +16,8 @@ function Navbar({ onOpenSearchModal = () => { } }) {
           </form>
           <div className="text-end">
             <button className="btn btn-outline-light me-2" onClick={onOpenSearchModal}>Search</button>
-            <button type="button" className="btn btn-outline-light me-2">Login</button>
-            <button type="button" className="btn btn-warning">Sign-up</button>
+            <button type="button" className="btn btn-outline-light me-2"onClick={() => { window.location.href = '/login' }}>Login</button>
+            <button type="button" className="btn btn-warning"onClick={() => { window.location.href = '/register' }}>Sign-up</button>
           </div>
         </div>
       </div>
