@@ -3,6 +3,7 @@ const router = express.Router();
 const scribeDb = require('../db/scribe_db')
 const jwt = require('jsonwebtoken');
 const { JWT_SIGNING_KEY } = require('../middleware/middleware')
+const bcrypt = require('bcrypt');
 
 
 
@@ -31,9 +32,8 @@ router.post('/login', async (req, res) => {
       req.body.email
     )
 
-    // decrypt the user email?
 
-    if (user.password !== req.body.password) {
+    if (!bcrypt.compareSync(req.body.password, user.password)) {
       res.status(403).send("incorrect password")
       return
     }
@@ -56,11 +56,13 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register', async (req, res) => {
+
+  const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
   try {
     const user = await scribeDb.users.create(
       {
         name: req.body.username,
-        password: req.body.password,
+        password: encryptedPassword,
         email: req.body.email,
       }
     )
