@@ -9,7 +9,7 @@ const getCampaigns = async (req, res) => {
     )
     let campaignsWithMaps = []
     for (let campaign of campaigns) {
-      const map = await scribeDb.maps.getByCampaignId(campaign.id)
+      const map = await scribeDb.maps.getByCampaignId(campaign.campaign_id)
       campaignsWithMaps.push({
         ...campaign,
         map
