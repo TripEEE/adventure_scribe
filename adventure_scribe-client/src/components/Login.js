@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import client from "../client";
 import  "./Login_Register.scss";
 
@@ -8,7 +8,7 @@ const Login = () => {
     const { setAuth } = useContext(AuthContext);
     const emailRef = useRef();
     const errRef = useRef();
-
+    const navigate = useNavigate()
     const [email, setEmail] = useState('');
     const [password, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
@@ -26,7 +26,8 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await client.login(email, password);
-            console.log(response.data);
+            console.log(response);
+                navigate('/')
                 const token = response?.data?.token;
                 setAuth({ email, password, token });
                 setEmail('');
@@ -52,7 +53,7 @@ const Login = () => {
                     <h1>You are logged in!</h1>
                     <br />
                     <p>
-                    <Link to="/landing">Go to Landing</Link>
+                    <Link to="/">Go to Landing</Link>
                     </p>
                 </section>
             ) : (

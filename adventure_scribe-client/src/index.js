@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import Application from './components/Application';
 import client from './client'
 import { AuthProvider } from './components/context/AuthProvider';
+import { BrowserRouter } from 'react-router-dom';
 
 const myExampleFlow = async () => {
   await client.login('john.doe@gmail.com', 'test123!')
@@ -38,9 +39,11 @@ const myExampleFlow = async () => {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-    <Application />
-    </AuthProvider>
+    <BrowserRouter>
+      <AuthProvider>
+        <Application />
+      </AuthProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
