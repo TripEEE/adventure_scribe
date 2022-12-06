@@ -77,7 +77,7 @@ function LocationMarker(props) {
         _createMarker(props.campaignID, {
           lat: e.latlng.lat,
           lon: e.latlng.lng,
-          name: "Placeholder"
+          name: "Click to Edit Title"
         })
       }
     },
