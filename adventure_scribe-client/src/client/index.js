@@ -81,7 +81,7 @@ const client = {
   },
 
   logout: () => {
-    deleteCookie('auth_token')
+    return deleteCookie('auth_token')
   },
 
   getMe: async () => {
