@@ -20,3 +20,24 @@
   width: 200px;
   height: 40px;
 }
+
+.deleteMarkerConfirmation {
+  margin-top: 30px;
+  color: red;
+}
+
+.successMessage {
+  margin-top: 10px;
+  margin-left: 15px;
+  padding: 5px;
+  background:rgb(45, 178, 196);
+  color:rgb(6, 43, 48);
+  border-radius: 10px;
+  opacity: 1;
+  animation: fade 2s linear;
+}
+
+@keyframes fade {
+  0%,100% { opacity: 0 }
+  50% { opacity: 1 }
+}
