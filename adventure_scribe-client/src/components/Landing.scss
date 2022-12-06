@@ -20,17 +20,37 @@
 
 
     .campaigns__campaign {
+      &:hover {
+        .campaigns__campaign__commands {
+          visibility: visible;
+        }
+      }
+
       // make a table with max columns?
-      padding: 40px;
-      margin: 20px;
-      border: solid green 1px;
-      border-radius: 8px;
-      font-weight: bold;
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      color: black;
-      cursor: pointer;
+      .campaigns__campaign__image {
+        padding: 40px;
+        margin: 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        color: black;
+        cursor: pointer;
+      }
+
+      .campaigns__campaign__commands {
+        visibility: hidden;
+        text-align: center;
+
+        button {
+          background-color: #ffc107;
+          margin: 0;
+          text-align: center;
+          padding: 6px;
+        }
+      }
+
     }
 
     .campaigns__createCampaign {
@@ -56,24 +76,31 @@
   }
 
   .input {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    align-items: center;
-
     .input-item {
-      max-height: 40px;
-      border: solid green 1px;
-    }
-
-    button {
-      background-color: gold;
-      margin-bottom: 24px;
       text-align: center;
+    }
 
+    .input__form,
+    .input__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
 
+      button {
+        background-color: #ffc107;
+        margin: 0;
+        text-align: center;
+        padding: 6px;
+      }
+    }
 
+    .input__header {
+      justify-content: flex-end;
+      margin-bottom: 6px;
 
     }
+
+
   }
 }
