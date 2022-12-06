@@ -114,7 +114,7 @@ const Landing = () => {
             style={{ backgroundImage: `url(${campaign.map.link})` }}
             className="campaigns__campaign__image"
             key={campaign.id}
-            onClick={_navigateToCampaign(campaign.id)}>
+            onClick={_navigateToCampaign(campaign.campaign_id)}>
             {isEditingCampaign ? <input
               value={campaignNameEdit}
               onChange={(e) => setCampaignNameEdit(e.target.value)}
