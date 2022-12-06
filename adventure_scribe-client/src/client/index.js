@@ -72,7 +72,7 @@ const client = {
         password
       },
       );
-
+      localStorage.setItem("user", JSON.stringify({token: response.data}))
       document.cookie = `auth_token=${response.data}`
       return document.cookie;
     } catch (err) {

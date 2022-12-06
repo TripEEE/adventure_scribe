@@ -17,20 +17,16 @@ function Application() {
         <Navbar onOpenSearchModal={() => setIsSearchModalOpen(true)} />
       </nav>
 
-      <Router>
-        <Routes>
-          <Route path="/landing" element={<Landing />} />
-        </Routes>
-        <Routes>
-          <Route path="/campaign/:campaignId" element={<MainContainer />} />
-        </Routes>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-        </Routes>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-        </Routes>
-      </Router>
+      <Routes>
+
+        <Route path="/" element={<Landing />} />
+
+        <Route path="/campaign/:campaignId" element={<MainContainer />} />
+
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/register" element={<Register />} />
+      </Routes>
       <div className="overlay-container">
         {isSearchModalOpen && (
           <Search onCloseModal={() => setIsSearchModalOpen(false)} />
