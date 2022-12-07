@@ -45,6 +45,7 @@ function LocationMarker(props) {
     await client.deleteMarker(campaignID, markerID);
     setMarkers(current => current.filter(P => { return P.id !== markerID }));
     setDeleteConfirm({ id: null, delete: false });
+    map.closePopup();
   }
 
   const editCheck = (id, name) => {
