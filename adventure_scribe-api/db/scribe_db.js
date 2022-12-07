@@ -20,7 +20,7 @@ const scribeDb = {
     getByUserId: async (userId) => {
       const query = `
         SELECT
-          *
+          campaigns.*
         FROM
           campaigns
         INNER JOIN campaigns_users ON campaigns.id = campaigns_users.campaign_id
@@ -297,7 +297,22 @@ const scribeDb = {
       const { query, values } = generateInsertQuery('users', user)
 
       try {
+
         const result = await db.query(query, values)
+        return result.rows[0]
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
+    update: async (user) => {
+      console.log({ user })
+      const { query, values } = generateUpdateQuery("users", user, { where: { id: user.id } })
+      try {
+        const result = await db.query(query, values)
+        console.log({ query, values })
+        console.log(result)
         return result.rows[0]
       }
       catch (err) {
@@ -315,12 +330,32 @@ const scribeDb = {
 
       try {
         const result = await db.query(query, values)
-        return result.rows[0]
+        const [user] = result.rows
+        return user
       }
       catch (err) {
         throw err
       }
     },
+
+    //get a single user
+    getByEmail: async (email) => {
+      const { query, values } = generateSelectQuery("users", {
+        where: {
+          email
+        }
+      })
+
+      try {
+        const result = await db.query(query, values)
+        const [user] = result.rows
+        return user
+      }
+      catch (err) {
+        throw err
+      }
+    },
+
 
     //user creating a campaign is added to the campaign as a user, default DM=true
     addUserToCampaign: async (userId, campaignId, isDM) => {

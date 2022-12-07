@@ -1,14 +1,15 @@
 import './Navbar.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link, useNavigate } from 'react-router-dom';
+import client from '../client'
 
 
 function Navbar({ onOpenSearchModal = () => { } }) {
   const user = JSON.parse(localStorage.getItem("user"))
   const navigate = useNavigate()
-  const handleLogout = () => { 
-    localStorage.removeItem("user")
-    navigate('/')
+  const handleLogout = () => {
+    client.logout()
+    window.location.href = "/"
   }
   return (
     <header className="p-3 text-bg-dark">
@@ -25,14 +26,14 @@ function Navbar({ onOpenSearchModal = () => { } }) {
             <button className="btn btn-outline-light me-2" onClick={onOpenSearchModal}>Search</button>
             {
               user ?
-              <>
-              <button type="button" className="btn btn-outline-light me-2"onClick={handleLogout}>Logout</button>
-              </>
-              :
-              <>
-              <button type="button" className="btn btn-outline-light me-2" onClick={() => navigate('/login')}>Login</button>
-            <button type="button" className="btn btn-warning" onClick={() => navigate('/register')}>Sign-up</button>
-              </>
+                <>
+                  <button type="button" className="btn btn-outline-light me-2" onClick={handleLogout}>Logout</button>
+                </>
+                :
+                <>
+                  <button type="button" className="btn btn-outline-light me-2" onClick={() => navigate('/login')}>Login</button>
+                  <button type="button" className="btn btn-warning" onClick={() => navigate('/register')}>Sign-up</button>
+                </>
             }
           </div>
         </div>

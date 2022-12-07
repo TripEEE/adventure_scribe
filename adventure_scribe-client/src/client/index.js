@@ -19,11 +19,10 @@ export const getCookie = (key) => {
   return cookie.split("=")[1]
 }
 
-const deleteCookie = (name, path, domain) => {
+const deleteCookie = (name) => {
   if (getCookie(name)) {
+    console.log("deleting cookie")
     document.cookie = name + "=" +
-      ((path) ? ";path=" + path : "") +
-      ((domain) ? ";domain=" + domain : "") +
       ";expires=Thu, 01 Jan 1970 00:00:01 GMT";
   }
 }
@@ -72,7 +71,7 @@ const client = {
         password
       },
       );
-      localStorage.setItem("user", JSON.stringify({token: response.data}))
+      localStorage.setItem("user", '{}')
       document.cookie = `auth_token=${response.data}`
       return document.cookie;
     } catch (err) {
@@ -81,7 +80,8 @@ const client = {
   },
 
   logout: () => {
-    return deleteCookie('auth_token')
+    deleteCookie("auth_token")
+    localStorage.removeItem("user")
   },
 
   getMe: async () => {

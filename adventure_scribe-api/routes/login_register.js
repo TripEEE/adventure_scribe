@@ -13,9 +13,8 @@ router.get('/me', async (req, res) => {
   const authHeader = req.header("Authorization");
   const [_, token] = authHeader.split(" ")
 
-  const tokenPayload = jwt.verify(token, JWT_SIGNING_KEY)
-
   try {
+    const tokenPayload = jwt.verify(token, JWT_SIGNING_KEY)
     const user = await scribeDb.users.getById(
       tokenPayload.user_id
     )
@@ -59,13 +58,29 @@ router.post('/register', async (req, res) => {
 
   const encryptedPassword = bcrypt.hashSync(req.body.password, 10);
   try {
-    const user = await scribeDb.users.create(
-      {
+
+    const existingUser = await scribeDb.users.getByEmail(req.body.email)
+    console.log("====", { existingUser })
+
+    let user = {};
+    if (!existingUser) {
+      user = await scribeDb.users.create(
+        {
+          name: req.body.username,
+          password: encryptedPassword,
+          email: req.body.email,
+        }
+      )
+    } else {
+      user = await scribeDb.users.update({
+        id: existingUser.id,
         name: req.body.username,
         password: encryptedPassword,
-        email: req.body.email,
-      }
-    )
+        email: existingUser.email,
+      })
+      console.log("update", user)
+    }
+
     res.json(user)
   }
   catch (err) {

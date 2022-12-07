@@ -33,14 +33,6 @@ export const getCampaignById = async (campaignId) => {
   }
 }
 
-// export const getMap = async (mapId) => {
-//   try {
-//     const response = await axios.get(
-//       `http://localhost:3002/api/`
-//     )
-//   }
-// }
-
 export const inviteUserToCampaign = async (campaignId, emails = []) => {
   try {
     const response = await axios.post(

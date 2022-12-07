@@ -6,13 +6,15 @@ const Landing = () => {
 
   const navigate = useNavigate()
 
+  const currentUser = JSON.parse(localStorage.getItem("user"))
+
   const [me, setMe] = useState({})
   const [myCampaigns, setMyCampaigns] = useState([])
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState({})
   const [formErrors, setFormErrors] = useState([])
   const [isDeleteActive, setIsDeleteActive] = useState(false);
-  const [isEditingCampaign, setIsEditingCampaign] = useState(false);
+  const [editingCampaignId, setEditingCampaignId] = useState(false);
   const [campaignNameEdit, setCampaignNameEdit] = useState('');
 
   const _setFormValue = (key) => {
@@ -34,16 +36,16 @@ const Landing = () => {
     await _getMyCampaigns()
   }
 
-  const _setIsEditingCampaign = (campaignName) => () => {
+  const _setIsEditingCampaign = (id, campaignName) => () => {
     setCampaignNameEdit(campaignName)
-    setIsEditingCampaign(true)
+    setEditingCampaignId(id)
   }
 
   const onEditCampaign = (campaignId) => async (e) => {
     if (e.which === 13) {
       await client.editCampaign({ name: campaignNameEdit, id: campaignId })
       setCampaignNameEdit('')
-      setIsEditingCampaign(false)
+      setEditingCampaignId('')
       await _getMyCampaigns()
     }
   }
@@ -82,16 +84,16 @@ const Landing = () => {
 
   const _getMe = async () => {
     const resp = await client.getMe()
-    setMe(resp)
+    setMe(resp || {})
   }
 
   const _getMyCampaigns = async () => {
     const resp = await client.getCampaigns()
-    setMyCampaigns(resp)
+    setMyCampaigns(resp || [])
   }
 
   const _navigateToCampaign = (campaignId) => {
-    if (isEditingCampaign) {
+    if (editingCampaignId) {
       return;
     }
     return () => {
@@ -100,9 +102,17 @@ const Landing = () => {
   }
 
   useEffect(() => {
+    if (!currentUser) {
+      return;
+    }
     _getMe()
     _getMyCampaigns()
   }, [])
+
+
+  if (!currentUser) {
+    return <div className="wrapper"> <div style={{ textAlign: 'center', padding: 10 }}>Please log in to start your adventure</div> </div>
+  }
 
   return <div className="wrapper">
     <h1 className="welcome">Welcome, {me.name}!</h1>
@@ -111,11 +121,11 @@ const Landing = () => {
       {myCampaigns.map(campaign =>
         <div className="campaigns__campaign">
           <div
-            style={{ backgroundImage: `url(${campaign.map.link})` }}
+            style={{ backgroundImage: `url(${campaign?.map?.link})` }}
             className="campaigns__campaign__image"
             key={campaign.id}
-            onClick={_navigateToCampaign(campaign.campaign_id)}>
-            {isEditingCampaign ? <input
+            onClick={_navigateToCampaign(campaign.id)}>
+            {editingCampaignId && campaign.id === editingCampaignId ? <input
               value={campaignNameEdit}
               onChange={(e) => setCampaignNameEdit(e.target.value)}
               onClick={(e) => { e.preventDefault(); e.stopPropagation() }}
@@ -137,9 +147,9 @@ const Landing = () => {
               </>
 
             ) : (
-              !isEditingCampaign &&
+              !editingCampaignId &&
               (<>
-                <button onClick={_setIsEditingCampaign(campaign.name)}>Change Title</button>
+                <button onClick={_setIsEditingCampaign(campaign.id, campaign.name)}>Change Title</button>
                 <button onClick={() => setIsDeleteActive(true)}>Delete</button>
               </>)
 
